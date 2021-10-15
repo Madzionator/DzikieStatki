@@ -2,6 +2,21 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Game.cpp">
+      <Filter>Statki</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <Filter>Statki\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuGameMode.cpp">
+      <Filter>Statki\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorGameMode.cpp">
+      <Filter>Statki\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGameMode.cpp">
+      <Filter>Statki\GameModes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -10,5 +25,30 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="arial.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Statki">
+      <UniqueIdentifier>{9c0f865a-3f1e-4936-9bca-ba1fca4f2b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Statki\GameModes">
+      <UniqueIdentifier>{71fbb276-0224-4b2a-b4ad-3b5e125726f9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Statki</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
+      <Filter>Statki\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuGameMode.h">
+      <Filter>Statki\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorGameMode.h">
+      <Filter>Statki\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayGameMode.h">
+      <Filter>Statki\GameModes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
