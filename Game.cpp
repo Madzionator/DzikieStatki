@@ -1,12 +1,16 @@
 #include "Game.h"
 
 #include "MenuGameMode.h"
+#include "System.h"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
+GameMode* Game::mGameMode = nullptr;
 
 Game::Game()
     : mWindow(sf::VideoMode(640, 480), "Statki")
 {
+    System::Window = &mWindow;
+    SetGameMode(new MenuGameMode());
 }
 
 void Game::Run()
@@ -40,15 +44,6 @@ void Game::ProcessEvents()
     {
         switch (event.type)
         {
-        case sf::Event::KeyPressed:
-            //handlePlayerInput(event.key.code, true);
-            break;
-        case sf::Event::KeyReleased:
-            //handlePlayerInput(event.key.code, false);
-            break;
-        case sf::Event::MouseButtonReleased:
-            //handlePlayerMouseClick(event.mo)
-            break;
         case sf::Event::Closed:
             mWindow.close();
             break;
@@ -61,15 +56,14 @@ void Game::ProcessEvents()
 
 void Game::Update(sf::Time deltaTime)
 {
-    // TODO: Update your objects here
-    // Example: mWindow.draw(mPlayer);
+	mGameMode->update(deltaTime);
 }
 
 void Game::Render()
 {
-    mWindow.clear();
+	mWindow.clear();
 
-    // TODO: Draw your objects here
+	mWindow.draw(*mGameMode);
 
-    mWindow.display();
+	mWindow.display();
 }

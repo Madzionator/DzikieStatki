@@ -1,11 +1,29 @@
-#include "MenuGameMode.h"
+﻿#include "MenuGameMode.h"
 
-void MenuGameMode::Render()
+#include "Button.h"
+#include "Game.h"
+#include "PlayGameMode.h"
+#include "System.h"
+
+MenuGameMode::MenuGameMode()
 {
-	//narysuj napis menu
+	//[](){}
+	//[] - zmienne lokalne
+	//() - zmienne z funkcji lambda
+	//{} - ciało funkcji lambda
+	button = Button();
+	button.onClick = []()
+	{
+		Game::SetGameMode(new PlayGameMode());
+	};
 }
 
-void MenuGameMode::Update(sf::Time delta_time)
+void MenuGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	target.draw(button);
+}
 
+void MenuGameMode::update(sf::Time deltaTime)
+{
+	button.update(deltaTime);
 }

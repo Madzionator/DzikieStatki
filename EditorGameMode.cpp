@@ -1,11 +1,11 @@
 #include "EditorGameMode.h"
 
-void EditorGameMode::Render()
+void EditorGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	//narysuj edytor
+
 }
 
-void EditorGameMode::Update(sf::Time deltaTime)
+void EditorGameMode::update(sf::Time deltaTime)
 {
 
 }

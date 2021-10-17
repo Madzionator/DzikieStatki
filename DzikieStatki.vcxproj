@@ -157,12 +157,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="EditorGameMode.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuGameMode.cpp" />
     <ClCompile Include="PlayGameMode.cpp" />
+    <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -173,11 +174,14 @@
     <Font Include="arial.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="EditorGameMode.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="MenuGameMode.h" />
     <ClInclude Include="PlayGameMode.h" />
+    <ClInclude Include="System.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

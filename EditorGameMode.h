@@ -3,7 +3,7 @@
 
 class EditorGameMode : public GameMode
 {
-	void Render() override;
-	void Update(sf::Time deltaTime) override;
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void update(sf::Time deltaTime) override;
 };
 

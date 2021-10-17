@@ -1,10 +1,9 @@
 #pragma once
-#include <SFML/System/Time.hpp>
+#include <SFML/System.hpp>
 
-class GameMode
+#include "Entity.h"
+
+class GameMode : public Entity
 {
-public:
-	virtual void Update(sf::Time deltaTime);
-	virtual void Render();
 };
 
