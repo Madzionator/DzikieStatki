@@ -157,23 +157,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="EditorGameMode.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuGameMode.cpp" />
     <ClCompile Include="PlayGameMode.cpp" />
+    <ClCompile Include="ShipTile.cpp" />
     <ClCompile Include="System.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="WaterTile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sfml-graphics-2.dll" />
-    <None Include="sfml-system-2.dll" />
-    <None Include="sfml-window-2.dll" />
+    <None Include="sfml-graphics-2.dll">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="sfml-system-2.dll">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="sfml-window-2.dll">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="arial.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="EditorGameMode.h" />
     <ClInclude Include="Entity.h" />
@@ -181,7 +192,10 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="MenuGameMode.h" />
     <ClInclude Include="PlayGameMode.h" />
+    <ClInclude Include="ShipTile.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="WaterTile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

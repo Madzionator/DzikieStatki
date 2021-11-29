@@ -20,6 +20,18 @@
     <ClCompile Include="Button.cpp">
       <Filter>Statki\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Statki\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Statki\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterTile.cpp">
+      <Filter>Statki\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ShipTile.cpp">
+      <Filter>Statki\Tiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -38,6 +50,9 @@
     </Filter>
     <Filter Include="Statki\UI">
       <UniqueIdentifier>{8960deb3-b246-4743-9e38-aec6c1179aa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Statki\Tiles">
+      <UniqueIdentifier>{1800f383-3780-4d81-a36c-1a9d3ac6da78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +79,18 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Statki\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Statki\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Statki\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterTile.h">
+      <Filter>Statki\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="ShipTile.h">
+      <Filter>Statki\Tiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
