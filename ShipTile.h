@@ -3,10 +3,9 @@
 
 class ShipTile : public Tile
 {
-	sf::RectangleShape shape;
 public:
-	ShipTile(int x, int y, int tileSize);
-	void drawTile(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void updateTile(sf::Time deltaTime) override;
+	ShipTile(Entity* parent);
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void update(sf::Time deltaTime) override;
 };
 

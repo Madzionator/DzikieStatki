@@ -4,7 +4,8 @@
 
 class PlayGameMode : public GameMode
 {
-	Board board;
+	Board* board1;
+	Board* board2;
 
 public:
 	PlayGameMode();

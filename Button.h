@@ -10,7 +10,7 @@ class Button : public Entity
 public:
 	std::function<void()> onClick;
 
-	Button();
+	Button(Entity* parent);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update(sf::Time deltaTime) override;

@@ -5,5 +5,7 @@
 
 class GameMode : public Entity
 {
+protected:
+	GameMode() : Entity(nullptr){}
 };
 

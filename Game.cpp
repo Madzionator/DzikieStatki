@@ -7,7 +7,7 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 GameMode* Game::mGameMode = nullptr;
 
 Game::Game()
-    : mWindow(sf::VideoMode(640, 480), "Statki")
+    : mWindow(sf::VideoMode(800, 480), "Statki")
 {
     System::Window = &mWindow;
     SetGameMode(new MenuGameMode());

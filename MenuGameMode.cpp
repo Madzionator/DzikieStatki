@@ -7,23 +7,21 @@
 
 MenuGameMode::MenuGameMode()
 {
-	//[](){}
-	//[] - zmienne lokalne
-	//() - zmienne z funkcji lambda
-	//{} - ciało funkcji lambda
-	button = Button();
-	button.onClick = []()
+	button = new Button(this);
+	button->onClick = []()
 	{
 		Game::SetGameMode(new PlayGameMode());
 	};
+	button->setPosition(50, 50);
 }
 
 void MenuGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(button);
+	states.transform *= getTransform();
+	target.draw(*button, states);
 }
 
 void MenuGameMode::update(sf::Time deltaTime)
 {
-	button.update(deltaTime);
+	button->update(deltaTime);
 }

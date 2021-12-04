@@ -2,28 +2,28 @@
 
 #include "System.h"
 
-Tile::Tile(int x, int y, int tileSize)
+Tile::Tile(Entity* parent, sf::Sprite* sprite)
+	: Entity(parent), TileSize(32)
 {
-	X = x;
-	Y = y;
-	TileSize = tileSize;
-	shape = sf::RectangleShape(sf::Vector2f(tileSize, tileSize));
-	shape.setPosition(sf::Vector2f(x * tileSize, y * tileSize));
+	animable = new Animable(this, sprite);
+	overlay = new sf::RectangleShape(sf::Vector2f(TileSize, TileSize));
+	overlay->setFillColor(sf::Color(255, 255, 0, 50));
 }
 
 void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	drawTile(target, states);
+	target.draw(*animable, states);
+	target.draw(*overlay, states);
 }
 
 void Tile::update(sf::Time delta_time)
 {
 	auto mouseVec = sf::Mouse::getPosition(*System::Window);
-	auto xd = sf::RenderStates(sf::Transform().translate(50, 100));
-	auto xdd = xd.transform.getInverse().transformPoint(sf::Vector2f(mouseVec.x, mouseVec.y));
+	auto localMousePosition = (parent->getTransform() * getTransform()).getInverse().transformPoint(sf::Vector2f(mouseVec.x, mouseVec.y));
 
-	IsMouseOver = shape.getGlobalBounds().contains(xdd);
+	IsMouseOver = animable->shape->getLocalBounds().contains(localMousePosition);
 	IsMouseDown = IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-	updateTile(delta_time);
+	overlay->setFillColor(sf::Color(255, 255, 0, IsMouseOver ? 50 : 0));
+	animable->update(delta_time);
 }

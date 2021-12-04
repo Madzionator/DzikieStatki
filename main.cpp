@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "System.h"
+#include "Textures.h"
 
 int main()
 {
@@ -12,7 +13,9 @@ int main()
 	{
 		// error...
 	}
+
 	System::Font = &font;
+	Textures::LoadTextures();
 
 	auto game = new Game();
 	game->Run();

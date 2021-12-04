@@ -156,7 +156,7 @@
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)sfml-*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy "$(ProjectDir)sfml-*.dll" "$(TargetDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -169,6 +169,7 @@
     <ClCompile Include="PlayGameMode.cpp" />
     <ClCompile Include="ShipTile.cpp" />
     <ClCompile Include="System.cpp" />
+    <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="WaterTile.cpp" />
   </ItemGroup>
@@ -193,10 +194,12 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameMode.h" />
+    <ClInclude Include="Animable.h" />
     <ClInclude Include="MenuGameMode.h" />
     <ClInclude Include="PlayGameMode.h" />
     <ClInclude Include="ShipTile.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="WaterTile.h" />
   </ItemGroup>

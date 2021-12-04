@@ -32,6 +32,9 @@
     <ClCompile Include="ShipTile.cpp">
       <Filter>Statki\Tiles</Filter>
     </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Statki</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -91,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="ShipTile.h">
       <Filter>Statki\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Statki</Filter>
+    </ClInclude>
+    <ClInclude Include="Animable.h">
+      <Filter>Statki\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

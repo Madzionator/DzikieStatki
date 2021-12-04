@@ -4,8 +4,8 @@
 
 class MenuGameMode : public GameMode
 {
-private:
-	Button button;
+	Button* button;
+
 public:
 	MenuGameMode();
 

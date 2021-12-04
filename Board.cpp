@@ -3,23 +3,29 @@
 #include "ShipTile.h"
 #include "WaterTile.h"
 
-Board::Board()
+Board::Board(Entity* parent) : Entity(parent)
 {
 	boardBackground = sf::RectangleShape(sf::Vector2f(tileSize * tileCount, tileSize * tileCount));
 	boardBackground.setFillColor(sf::Color(100, 100, 100));
 
 	tiles = new Tile * [tileCount * tileCount];
 	for (int x = 0; x < tileCount; x++)
-		for(int y = 0; y < tileCount; y++)
-			tiles[x*tileCount + y] = new WaterTile(x, y, tileSize);
+		for (int y = 0; y < tileCount; y++) {
+			auto tile = new WaterTile(this);
+			tiles[x * tileCount + y] = tile;
+			tile->setPosition(x * tileSize, y * tileSize);
+		}
 
-	tiles[69] = new ShipTile(6, 9, tileSize);
-	tiles[21] = new ShipTile(2, 1, tileSize);
-	tiles[37] = new ShipTile(3, 7, tileSize);
+	tiles[69] = new ShipTile(this);
+	tiles[69]->setPosition(6 * tileSize, 9 * tileSize);
+	tiles[21] = new ShipTile(this);
+	tiles[37] = new ShipTile(this);
 }
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
+
 	target.draw(boardBackground, states);
 	for (int i = 0; i < tileCount*tileCount; i++)
 		target.draw(*tiles[i], states);
