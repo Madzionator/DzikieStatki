@@ -3,7 +3,7 @@
 #include "Textures.h"
 
 ShipTile::ShipTile(Entity* parent)
-	: Tile(parent, Textures::ShipTileSprite)
+	: Tile(parent, Textures::WaterTileSprite)
 {
 }
 

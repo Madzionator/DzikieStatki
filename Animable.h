@@ -23,6 +23,7 @@ public:
 		: Entity(parent), shape(sprite), texture(const_cast<sf::Texture*>(sprite->getTexture()))
 	{
 		size = texture->getSize().x;
+
 		auto H = texture->getSize().y;
 		frames = H / size;
 	}

@@ -35,6 +35,9 @@
     <ClCompile Include="Textures.cpp">
       <Filter>Statki</Filter>
     </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Statki</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="Animable.h">
       <Filter>Statki\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Statki</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
