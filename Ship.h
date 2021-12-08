@@ -3,7 +3,7 @@
 
 class ShipTile;
 
-enum class ShipTileState { Undiscovered, Discovered, Destroyed };
+enum class ShipTileState { Undiscovered, Visible, Hited, Destroyed };
 
 class Ship
 {

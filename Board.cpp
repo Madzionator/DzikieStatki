@@ -57,9 +57,9 @@ Board::Board(Entity* parent) : Entity(parent)
 	auto ship2 = new Ship(shiptiles2);
 	auto ship3 = new Ship(shiptiles3);
 
-	shiptiles1[1]->setState(ShipTileState::Discovered);
-	shiptiles1[3]->setState(ShipTileState::Discovered);
-	shiptiles2[1]->setState(ShipTileState::Discovered);
+	shiptiles1[1]->setState(ShipTileState::Visible);
+	shiptiles1[3]->setState(ShipTileState::Visible);
+	shiptiles2[1]->setState(ShipTileState::Hited);
 	shiptiles3[0]->setState(ShipTileState::Destroyed);
 
 }

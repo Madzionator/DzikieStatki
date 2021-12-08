@@ -12,8 +12,10 @@ public:
 	void setState(ShipTileState state)
 	{
 		this->state = state;
-		if (state == ShipTileState::Discovered)
-			this->animable = new Animable(this, Textures::DiscoveredShipTileSprite);
+		if (state == ShipTileState::Visible)
+			this->animable = new Animable(this, Textures::VisibleShipTileSprite);
+		else if (state == ShipTileState::Hited)
+			this->animable = new Animable(this, Textures::HitedShipTileSprite);
 		else if (state == ShipTileState::Destroyed)
 			this->animable = new Animable(this, Textures::DestroyedShipTileSprite);
 	}
