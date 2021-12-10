@@ -1,16 +1,15 @@
 ﻿#include "MenuGameMode.h"
 
 #include "Button.h"
+#include "EditorGameMode.h"
 #include "Game.h"
-#include "PlayGameMode.h"
-#include "System.h"
 
 MenuGameMode::MenuGameMode()
 {
 	button = new Button(this);
 	button->onClick = []()
 	{
-		Game::SetGameMode(new PlayGameMode());
+		Game::SetGameMode(new EditorGameMode());
 	};
 	button->setPosition(50, 50);
 }

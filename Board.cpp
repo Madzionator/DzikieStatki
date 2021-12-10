@@ -15,53 +15,6 @@ Board::Board(Entity* parent) : Entity(parent)
 			tiles[x * tileCount + y] = tile;
 			tile->setPosition(x * tileSize, y * tileSize);
 		}
-
-	tiles[11] = new ShipTile(this);
-	tiles[21] = new ShipTile(this);
-	tiles[31] = new ShipTile(this);
-	tiles[12] = new ShipTile(this);
-	tiles[13] = new ShipTile(this);
-
-	tiles[33] = new ShipTile(this);
-	tiles[43] = new ShipTile(this);
-	tiles[53] = new ShipTile(this);
-
-	tiles[27] = new ShipTile(this);
-
-	tiles[11]->setPosition(1 * tileSize, 1 * tileSize);
-	tiles[21]->setPosition(2 * tileSize, 1 * tileSize);
-	tiles[31]->setPosition(3 * tileSize, 1 * tileSize);
-	tiles[12]->setPosition(1 * tileSize, 2 * tileSize);
-	tiles[13]->setPosition(1 * tileSize, 3 * tileSize);
-	tiles[33]->setPosition(3 * tileSize, 3 * tileSize);
-	tiles[43]->setPosition(4 * tileSize, 3 * tileSize);
-	tiles[53]->setPosition(5 * tileSize, 3 * tileSize);
-	tiles[27]->setPosition(2 * tileSize, 7 * tileSize);
-
-	std::vector<ShipTile*> shiptiles1;
-	shiptiles1.push_back(dynamic_cast<ShipTile* const>(tiles[11]));
-	shiptiles1.push_back(dynamic_cast<ShipTile* const>(tiles[21]));
-	shiptiles1.push_back(dynamic_cast<ShipTile* const>(tiles[31]));
-	shiptiles1.push_back(dynamic_cast<ShipTile* const>(tiles[12]));
-	shiptiles1.push_back(dynamic_cast<ShipTile* const>(tiles[13]));
-
-	std::vector<ShipTile*> shiptiles2;
-	shiptiles2.push_back(dynamic_cast<ShipTile* const>(tiles[33]));
-	shiptiles2.push_back(dynamic_cast<ShipTile* const>(tiles[43]));
-	shiptiles2.push_back(dynamic_cast<ShipTile* const>(tiles[53]));
-
-	std::vector<ShipTile*> shiptiles3;
-	shiptiles3.push_back(dynamic_cast<ShipTile* const>(tiles[27]));
-
-	auto ship1 = new Ship(shiptiles1);
-	auto ship2 = new Ship(shiptiles2);
-	auto ship3 = new Ship(shiptiles3);
-
-	shiptiles1[1]->setState(ShipTileState::Visible);
-	shiptiles1[3]->setState(ShipTileState::Visible);
-	shiptiles2[1]->setState(ShipTileState::Hited);
-	shiptiles3[0]->setState(ShipTileState::Destroyed);
-
 }
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -77,4 +30,21 @@ void Board::update(sf::Time delta_time)
 {
 	for (int i = 0; i < tileCount * tileCount; i++)
 		tiles[i]->update(delta_time);
+
+	if(isEditMode)
+	for (int x = 0; x < tileCount*tileCount; x++)
+		if (tiles[x]->IsMouseDown)
+		{
+			auto tile = tiles[x];
+			if(tile->TileType == TileType::Water)
+			{
+				tiles[x] = new ShipTile(this);
+				tiles[x]->setPosition(tile->getPosition());
+			}
+			else
+			{
+				tiles[x] = new WaterTile(this);
+				tiles[x]->setPosition(tile->getPosition());
+			}
+		}
 }

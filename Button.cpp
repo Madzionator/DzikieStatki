@@ -7,10 +7,8 @@ Button::Button(Entity* parent) : Entity(parent)
 	shape.setFillColor(sf::Color::Green);
 
 	text.setFont(*System::Font);
-	text.setString(":3");
 	text.setCharacterSize(24);
 	text.setFillColor(sf::Color::Black);
-
 }
 
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const

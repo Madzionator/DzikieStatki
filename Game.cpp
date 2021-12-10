@@ -1,5 +1,6 @@
 #include "Game.h"
 
+#include "EditorGameMode.h"
 #include "MenuGameMode.h"
 #include "System.h"
 
@@ -10,7 +11,7 @@ Game::Game()
     : mWindow(sf::VideoMode(800, 480), "Statki")
 {
     System::Window = &mWindow;
-    SetGameMode(new MenuGameMode());
+    SetGameMode(new EditorGameMode());
 }
 
 void Game::Run()

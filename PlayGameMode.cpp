@@ -1,11 +1,8 @@
 #include "PlayGameMode.h"
 
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/System/Vector2.hpp>
-
-PlayGameMode::PlayGameMode()
+PlayGameMode::PlayGameMode(Board* playerBoard)
 {
-	board1 = new Board(this);
+	board1 = playerBoard;
 	board2 = new Board(this);
 
 	board1->setPosition(50, 100);

@@ -3,8 +3,9 @@
 #include "Textures.h"
 
 ShipTile::ShipTile(Entity* parent)
-	: Tile(parent, Textures::WaterTileSprite)
+	: Tile(parent, Textures::VisibleShipTileSprite)
 {
+	TileType = TileType::Ship;
 }
 
 void ShipTile::draw(sf::RenderTarget& target, sf::RenderStates states) const

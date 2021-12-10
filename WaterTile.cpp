@@ -5,6 +5,7 @@
 WaterTile::WaterTile(Entity* parent)
 	: Tile(parent, Textures::WaterTileSprite)
 {
+	TileType = TileType::Water;
 }
 
 void WaterTile::draw(sf::RenderTarget& target, sf::RenderStates states) const

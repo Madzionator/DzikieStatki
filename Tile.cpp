@@ -26,7 +26,7 @@ void Tile::update(sf::Time delta_time)
 	IsMouseOver = overlay->getLocalBounds().contains(localMousePosition);
 	IsMouseDown = IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-	overlay->setFillColor(sf::Color(255, 255, 0, IsMouseOver ? 50 : 0));
+	overlay->setFillColor(sf::Color(255, 255, 0, (IsMouseDown ? 20 : 0) + ( IsMouseOver ? 50 : 0)));
 
 	if(animable)
 		animable->update(delta_time);
