@@ -8,6 +8,15 @@ WaterTile::WaterTile(Entity* parent)
 	TileType = TileType::Water;
 }
 
+void WaterTile::setState(WaterTileState state)
+{
+	tileState = state;
+	if (tileState == WaterTileState::Hit)
+		this->animable = new Animable(this, Textures::WaterHitTileSprite);
+	else
+		this->animable = new Animable(this, Textures::WaterTileSprite);
+}
+
 void WaterTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();

@@ -9,10 +9,11 @@ Board::Board(Entity* parent) : Entity(parent)
 	boardBackground.setFillColor(sf::Color(100, 100, 100));
 
 	tiles = new Tile* [tileCount * tileCount];
-	for (int x = 0; x < tileCount; x++)
-		for (int y = 0; y < tileCount; y++) {
+	for (int y = 0; y < tileCount; y++)
+		for (int x = 0; x < tileCount; x++) 
+		{
 			auto tile = new WaterTile(this);
-			tiles[x * tileCount + y] = tile;
+			tiles[y * tileCount + x] = tile;
 			tile->setPosition(x * tileSize, y * tileSize);
 		}
 }

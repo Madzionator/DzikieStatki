@@ -2,11 +2,16 @@
 #include "Board.h"
 #include "GameMode.h"
 
+enum class PlayState { PlayerTurn, ComputerTurn };
+
 class PlayGameMode : public GameMode
 {
+	PlayState playState = PlayState::PlayerTurn;
 	Board* board1;
 	Board* board2;
 	void MakeComputerBoard();
+	sf::Text playStateText;
+	void setPlayState(PlayState ps);
 public:
 	PlayGameMode(Board* board);
 

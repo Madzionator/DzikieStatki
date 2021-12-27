@@ -5,12 +5,14 @@ class Textures
 {
 public:
 	static sf::Texture* WaterTileTexture;
+	static sf::Texture* WaterHitTileTexture;
 	static sf::Texture* ExplosionTexture;
 	static sf::Texture* VisibleShipTileTexture;
 	static sf::Texture* DestroyedShipTileTexture;
 	static sf::Texture* DamagedShipTileTexture;
 
 	static sf::Sprite* WaterTileSprite;
+	static sf::Sprite* WaterHitTileSprite;
 	static sf::Sprite* ExplosionSprite;
 	static sf::Sprite* DestroyedShipTileSprite;
 	static sf::Sprite* VisibleShipTileSprite;
