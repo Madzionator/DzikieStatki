@@ -10,6 +10,9 @@ class EditorGameMode : public GameMode
 	void update(sf::Time deltaTime) override;
 	Board* board;
 	Button* playButton;
+
+	void prepareBoard();
+	
 public:
 	EditorGameMode();
 };
