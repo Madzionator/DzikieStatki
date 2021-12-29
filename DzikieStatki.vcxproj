@@ -168,6 +168,7 @@
     <ClCompile Include="Computer.cpp" />
     <ClCompile Include="EditorGameMode.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameOverMode.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuGameMode.cpp" />
     <ClCompile Include="PlayGameMode.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="Animable.h" />
+    <ClInclude Include="GameOverMode.h" />
     <ClInclude Include="MenuGameMode.h" />
     <ClInclude Include="PlayGameMode.h" />
     <ClInclude Include="resource.h" />

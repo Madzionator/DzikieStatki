@@ -1,17 +1,10 @@
-#include "PlayGameMode.h"
+ï»¿#include "PlayGameMode.h"
 
+#include "Game.h"
+#include "GameOverMode.h"
 #include "ShipTile.h"
 #include "System.h"
 #include "WaterTile.h"
-
-void PlayGameMode::setPlayState(PlayState ps)
-{
-	playState = ps;
-	if (playState == PlayState::ComputerTurn)
-		playStateText.setString("Komputer oddaje ruch");
-	else if (playState == PlayState::PlayerTurn)
-		playStateText.setString("Twój ruch");
-}
 
 PlayGameMode::PlayGameMode(Board* playerBoard)
 {
@@ -21,11 +14,12 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 	board2 = new Board(this);
 	computer = new Computer();
 	MakeComputerBoard();
+	pl1ShipLeft = board1->ships.size();
+	pl2ShipLeft = board2->ships.size();
 	setPlayState(PlayState::PlayerTurn);
 
 	board1->setPosition(50, 100);
 	board2->setPosition(400, 100);
-
 }
 
 void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -36,8 +30,26 @@ void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(playStateText);
 }
 
+void PlayGameMode::setPlayState(PlayState ps)
+{
+	playState = ps;
+	if (playState == PlayState::ComputerTurn) {
+		playStateText.setString("Komputer oddaje ruch");
+		timer = 400;
+	}
+	else if (playState == PlayState::ComputerThink) {
+		playStateText.setString("Komputer mysli nad ruchem");
+		timer = 700;
+	}
+	else if (playState == PlayState::PlayerTurn)
+		playStateText.setString("Twoj ruch");
+}
+
+
 void PlayGameMode::update(sf::Time deltaTime)
 {
+	if (timer > 0) timer -= deltaTime.asMilliseconds();
+
 	board1->update(deltaTime);
 	board2->update(deltaTime);
 	if (playState == PlayState::PlayerTurn)
@@ -45,25 +57,45 @@ void PlayGameMode::update(sf::Time deltaTime)
 		for (int x = 0; x < board2->tileCount * board2->tileCount; x++)
 			if (board2->tiles[x]->IsMouseDown)
 			{
-				if (hitTile(board2->tiles[x]) != -1)
-					setPlayState(PlayState::ComputerTurn);
+				auto turnResult = hitTile(board2->tiles[x]);
+				if (turnResult == TurnResult::Water)
+					setPlayState(PlayState::ComputerThink);
+				else if (turnResult == TurnResult::Error)
+					playStateText.setString("Wybierz poprawne pole!");
+				else
+				{
+					playStateText.setString("Trafiono! Wybierz kolejne pole");
+					if(turnResult == TurnResult::Destroyed)
+						if(--pl2ShipLeft == 0)
+							Game::SetGameMode(new GameOverMode(true));
+				}
 			}
 	}
 	else if (playState == PlayState::ComputerTurn)
 	{
-		int p = computer->getNextPosition();
-		auto hit = hitTile(board1->tiles[p]);
-		if (hit == 1)
-			computer->wasHit(p);
-		else if (hit == 2)
-			computer->wasDestroyed(p);
+		if (timer > 0) return;
 
-		if(hit != -1)
+		int p = computer->getNextPosition();
+		auto turnResult = hitTile(board1->tiles[p]);
+		if (turnResult == TurnResult::Hit)
+			computer->wasHit(p);
+		else if (turnResult == TurnResult::Destroyed)
+		{
+			computer->wasDestroyed(p);
+			if(--pl1ShipLeft == 0)
+				Game::SetGameMode(new GameOverMode(false));
+		}
+
+		if(turnResult == TurnResult::Water)
 			setPlayState(PlayState::PlayerTurn);
+	}
+	else if(playState == PlayState::ComputerThink)
+	{
+		if (timer <= 0) setPlayState(PlayState::ComputerTurn);
 	}
 }
 
-int PlayGameMode::hitTile(Tile* tile)
+TurnResult PlayGameMode::hitTile(Tile* tile)
 {
 	if (tile->TileType == TileType::Water)
 	{
@@ -71,7 +103,7 @@ int PlayGameMode::hitTile(Tile* tile)
 		if (watertile->getState() == WaterTileState::Default)
 		{
 			watertile->setState(WaterTileState::Hit);
-			return 0;
+			return TurnResult::Water;
 		}
 	}
 	else
@@ -81,13 +113,10 @@ int PlayGameMode::hitTile(Tile* tile)
 		{
 			shiptile->setState(ShipTileState::Damaged);
 			auto destroyed = shiptile->ship->checkDestroyed();
-			if (destroyed)
-				return 2;
-			else
-				return 1;
+			return destroyed ? TurnResult::Destroyed : TurnResult::Hit;
 		}
 	}
-	return -1;
+	return TurnResult::Error;
 }
 
 void PlayGameMode::MakeComputerBoard()
@@ -114,6 +143,6 @@ void PlayGameMode::MakeComputerBoard()
 	statek1.push_back(tile2);
 	statek1.push_back(tile3);
 	statek2.push_back(tile4);
-	new Ship(statek1);
-	new Ship(statek2);
+	board2->ships.push_back(new Ship(statek1));
+	board2->ships.push_back(new Ship(statek2));
 }

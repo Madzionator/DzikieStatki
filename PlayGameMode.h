@@ -3,7 +3,8 @@
 #include "Computer.h"
 #include "GameMode.h"
 
-enum class PlayState { PlayerTurn, ComputerTurn };
+enum class PlayState { PlayerTurn, ComputerThink, ComputerTurn };
+enum class TurnResult { Error, Water, Hit, Destroyed };
 
 class PlayGameMode : public GameMode
 {
@@ -11,10 +12,14 @@ class PlayGameMode : public GameMode
 	Board* board1;
 	Board* board2;
 	Computer* computer;
+	int pl1ShipLeft;
+	int pl2ShipLeft;
+
 	void MakeComputerBoard();
 	sf::Text playStateText;
 	void setPlayState(PlayState ps);
-	int hitTile(Tile* tile);
+	TurnResult hitTile(Tile* tile);
+	int timer;
 public:
 	PlayGameMode(Board* board);
 

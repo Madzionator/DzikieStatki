@@ -41,6 +41,9 @@
     <ClCompile Include="Computer.cpp">
       <Filter>Statki</Filter>
     </ClCompile>
+    <ClCompile Include="GameOverMode.cpp">
+      <Filter>Statki\GameModes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -113,6 +116,9 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Computer.h">
       <Filter>Statki</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverMode.h">
+      <Filter>Statki\GameModes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

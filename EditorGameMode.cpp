@@ -71,6 +71,7 @@ void EditorGameMode::prepareBoard()
 	for (auto shipTiles : shipList)
 	{
 		auto ship = new Ship(shipTiles);
+		board->ships.push_back(ship);
 	}
 }
 

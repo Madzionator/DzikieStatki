@@ -29,23 +29,27 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Board::update(sf::Time delta_time)
 {
+	if(timer > 0) timer -= delta_time.asMilliseconds();
+
 	for (int i = 0; i < tileCount * tileCount; i++)
 		tiles[i]->update(delta_time);
 
-	if(isEditMode)
-	for (int x = 0; x < tileCount*tileCount; x++)
-		if (tiles[x]->IsMouseDown)
-		{
-			auto tile = tiles[x];
-			if(tile->TileType == TileType::Water)
+	if (isEditMode && timer <= 0) {
+		for (int x = 0; x < tileCount * tileCount; x++)
+			if (tiles[x]->IsMouseDown)
 			{
-				tiles[x] = new ShipTile(this);
-				tiles[x]->setPosition(tile->getPosition());
+				timer = 100;
+				auto tile = tiles[x];
+				if (tile->TileType == TileType::Water)
+				{
+					tiles[x] = new ShipTile(this);
+					tiles[x]->setPosition(tile->getPosition());
+				}
+				else
+				{
+					tiles[x] = new WaterTile(this);
+					tiles[x]->setPosition(tile->getPosition());
+				}
 			}
-			else
-			{
-				tiles[x] = new WaterTile(this);
-				tiles[x]->setPosition(tile->getPosition());
-			}
-		}
+	}
 }
