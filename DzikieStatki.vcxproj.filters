@@ -38,6 +38,9 @@
     <ClCompile Include="Ship.cpp">
       <Filter>Statki</Filter>
     </ClCompile>
+    <ClCompile Include="Computer.cpp">
+      <Filter>Statki</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -107,5 +110,12 @@
     <ClInclude Include="Ship.h">
       <Filter>Statki</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Computer.h">
+      <Filter>Statki</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DzikieStatki.rc" />
   </ItemGroup>
 </Project>

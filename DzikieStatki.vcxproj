@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="EditorGameMode.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -194,6 +195,7 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Computer.h" />
     <ClInclude Include="EditorGameMode.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
@@ -201,12 +203,16 @@
     <ClInclude Include="Animable.h" />
     <ClInclude Include="MenuGameMode.h" />
     <ClInclude Include="PlayGameMode.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="ShipTile.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="WaterTile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DzikieStatki.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

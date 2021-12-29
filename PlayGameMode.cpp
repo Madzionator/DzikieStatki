@@ -19,9 +19,9 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 	playStateText.setFillColor(sf::Color::White);
 	board1 = playerBoard;
 	board2 = new Board(this);
+	computer = new Computer();
 	MakeComputerBoard();
 	setPlayState(PlayState::PlayerTurn);
-
 
 	board1->setPosition(50, 100);
 	board2->setPosition(400, 100);
@@ -45,23 +45,25 @@ void PlayGameMode::update(sf::Time deltaTime)
 		for (int x = 0; x < board2->tileCount * board2->tileCount; x++)
 			if (board2->tiles[x]->IsMouseDown)
 			{
-				if (hitTile(board2->tiles[x]))
+				if (hitTile(board2->tiles[x]) != -1)
 					setPlayState(PlayState::ComputerTurn);
 			}
 	}
 	else if (playState == PlayState::ComputerTurn)
 	{
-		int p;
-		do
-		{
-			p = rand() % 100;
-		} while (!hitTile(board1->tiles[p]));
+		int p = computer->getNextPosition();
+		auto hit = hitTile(board1->tiles[p]);
+		if (hit == 1)
+			computer->wasHit(p);
+		else if (hit == 2)
+			computer->wasDestroyed(p);
 
-		setPlayState(PlayState::PlayerTurn);
+		if(hit != -1)
+			setPlayState(PlayState::PlayerTurn);
 	}
 }
 
-bool PlayGameMode::hitTile(Tile* tile)
+int PlayGameMode::hitTile(Tile* tile)
 {
 	if (tile->TileType == TileType::Water)
 	{
@@ -69,7 +71,7 @@ bool PlayGameMode::hitTile(Tile* tile)
 		if (watertile->getState() == WaterTileState::Default)
 		{
 			watertile->setState(WaterTileState::Hit);
-			return true;
+			return 0;
 		}
 	}
 	else
@@ -78,11 +80,14 @@ bool PlayGameMode::hitTile(Tile* tile)
 		if (shiptile->getState() == ShipTileState::Undiscovered || shiptile->getState() == ShipTileState::Visible)
 		{
 			shiptile->setState(ShipTileState::Damaged);
-			auto temp = shiptile->ship->checkDestroyed();
-			return true;
+			auto destroyed = shiptile->ship->checkDestroyed();
+			if (destroyed)
+				return 2;
+			else
+				return 1;
 		}
 	}
-	return false;
+	return -1;
 }
 
 void PlayGameMode::MakeComputerBoard()
