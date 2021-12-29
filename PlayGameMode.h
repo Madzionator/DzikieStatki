@@ -12,6 +12,7 @@ class PlayGameMode : public GameMode
 	void MakeComputerBoard();
 	sf::Text playStateText;
 	void setPlayState(PlayState ps);
+	bool hitTile(Tile* tile);
 public:
 	PlayGameMode(Board* board);
 

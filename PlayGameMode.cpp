@@ -31,8 +31,8 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
-	target.draw(*board1,states);
-	target.draw(*board2,states);
+	target.draw(*board1, states);
+	target.draw(*board2, states);
 	target.draw(playStateText);
 }
 
@@ -40,33 +40,49 @@ void PlayGameMode::update(sf::Time deltaTime)
 {
 	board1->update(deltaTime);
 	board2->update(deltaTime);
-	if(playState == PlayState::PlayerTurn)
+	if (playState == PlayState::PlayerTurn)
 	{
 		for (int x = 0; x < board2->tileCount * board2->tileCount; x++)
 			if (board2->tiles[x]->IsMouseDown)
 			{
-				auto tile = board2->tiles[x];
-				if(tile->TileType == TileType::Water)
-				{
-					auto watertile = (WaterTile*)tile;
-					if (watertile->getState() == WaterTileState::Default)
-					{
-						watertile->setState(WaterTileState::Hit);
-						setPlayState(PlayState::ComputerTurn);
-					}
-				}
-				else
-				{
-					auto shiptile = (ShipTile*)tile;
-					if(shiptile->getState() == ShipTileState::Undiscovered)
-					{
-						shiptile->setState(ShipTileState::Damaged);
-						auto temp = shiptile->ship->checkDestroyed();
-						setPlayState(PlayState::ComputerTurn);
-					}
-				}
+				if (hitTile(board2->tiles[x]))
+					setPlayState(PlayState::ComputerTurn);
 			}
 	}
+	else if (playState == PlayState::ComputerTurn)
+	{
+		int p;
+		do
+		{
+			p = rand() % 100;
+		} while (!hitTile(board1->tiles[p]));
+
+		setPlayState(PlayState::PlayerTurn);
+	}
+}
+
+bool PlayGameMode::hitTile(Tile* tile)
+{
+	if (tile->TileType == TileType::Water)
+	{
+		auto watertile = (WaterTile*)tile;
+		if (watertile->getState() == WaterTileState::Default)
+		{
+			watertile->setState(WaterTileState::Hit);
+			return true;
+		}
+	}
+	else
+	{
+		auto shiptile = (ShipTile*)tile;
+		if (shiptile->getState() == ShipTileState::Undiscovered || shiptile->getState() == ShipTileState::Visible)
+		{
+			shiptile->setState(ShipTileState::Damaged);
+			auto temp = shiptile->ship->checkDestroyed();
+			return true;
+		}
+	}
+	return false;
 }
 
 void PlayGameMode::MakeComputerBoard()
@@ -75,13 +91,13 @@ void PlayGameMode::MakeComputerBoard()
 	auto tile2 = new ShipTile(board2);
 	auto tile3 = new ShipTile(board2);
 	auto tile4 = new ShipTile(board2);
-	tile1->setPosition(4*32, 3*32);
+	tile1->setPosition(4 * 32, 3 * 32);
 	tile1->setState(ShipTileState::Undiscovered);
-	tile2->setPosition(4*32, 4*32);
+	tile2->setPosition(4 * 32, 4 * 32);
 	tile2->setState(ShipTileState::Undiscovered);
-	tile3->setPosition(5*32, 4*32);
+	tile3->setPosition(5 * 32, 4 * 32);
 	tile3->setState(ShipTileState::Undiscovered);
-	tile4->setPosition(8*32, 8*32);
+	tile4->setPosition(8 * 32, 8 * 32);
 	tile4->setState(ShipTileState::Undiscovered);
 	board2->tiles[34] = tile1;
 	board2->tiles[44] = tile2;
