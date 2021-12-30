@@ -1,7 +1,5 @@
 #include "Computer.h"
 
-#include <iostream>
-
 Computer::Computer()
 {
 	for (int i = 0; i < 100; i++)
@@ -66,7 +64,6 @@ void Computer::wasDestroyed(int position)
 	{
 		if (y < 0 || y > 9 || x < 0 || x > 9)
 			return;
-		std::cout << y << "-" << x <<"-"<<tilesLeft.size() << std::endl;
 		tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), (y*10 + x)), tilesLeft.end());
 	};
 
@@ -75,7 +72,6 @@ void Computer::wasDestroyed(int position)
 	for (auto pos : currentDamagedShip)
 	{
 		int y = pos / 10, x = pos % 10;
-		std::cout << pos << "-" << y << "-" << x << std::endl;
 
 		tryRemove(y - 1, x - 1);
 		tryRemove(y - 1, x );

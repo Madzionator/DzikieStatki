@@ -12,7 +12,6 @@ int main()
 	if (!font.loadFromFile("arial.ttf"))
 	{
 		// error...
-		std::cout << "dupa" << std::endl;
 	}
 
 	System::Font = &font;
@@ -20,7 +19,6 @@ int main()
 
 	auto game = new Game();
 	game->Run();
-	
-	
+
     return 0;
 }

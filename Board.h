@@ -8,7 +8,8 @@ class Board : public Entity
 {
 	sf::RectangleShape boardBackground;
 	int tileSize = 32;
-	int timer = 0;
+	bool isDrawing = false;
+	TileType drawType;
 public:
 	bool isEditMode;
 	int tileCount = 10;

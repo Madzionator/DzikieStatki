@@ -1,5 +1,4 @@
 #include "Board.h"
-
 #include "ShipTile.h"
 #include "WaterTile.h"
 
@@ -29,25 +28,27 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Board::update(sf::Time delta_time)
 {
-	if(timer > 0) timer -= delta_time.asMilliseconds();
-
 	for (int i = 0; i < tileCount * tileCount; i++)
 		tiles[i]->update(delta_time);
 
-	if (isEditMode && timer <= 0) {
+	if (isDrawing && !sf::Mouse::isButtonPressed(sf::Mouse::Left)) isDrawing = false;
+
+	if (isEditMode)
+	{
 		for (int x = 0; x < tileCount * tileCount; x++)
 			if (tiles[x]->IsMouseDown)
 			{
-				timer = 100;
 				auto tile = tiles[x];
-				if (tile->TileType == TileType::Water)
+				if(!isDrawing)
 				{
-					tiles[x] = new ShipTile(this);
-					tiles[x]->setPosition(tile->getPosition());
+					isDrawing = true;
+					drawType = tile->TileType;
 				}
-				else
+				if (tile->TileType == drawType)
 				{
-					tiles[x] = new WaterTile(this);
+					tiles[x] = tile->TileType == TileType::Ship
+						? (Tile*) new WaterTile(this)
+						: (Tile*) new ShipTile(this);
 					tiles[x]->setPosition(tile->getPosition());
 				}
 			}
