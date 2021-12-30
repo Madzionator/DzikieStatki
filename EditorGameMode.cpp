@@ -1,23 +1,119 @@
-#include "EditorGameMode.h"
-
-#include <iostream>
-
+﻿#include "EditorGameMode.h"
 #include "Button.h"
 #include "Game.h"
 #include "PlayGameMode.h"
 #include "ShipTile.h"
+#include "System.h"
+
+EditorGameMode::EditorGameMode()
+{
+	board = new Board(this);
+	board->setPosition(50, 50);
+	board->isEditMode = true;
+
+	message = sf::Text("", *System::Font);
+	message.setFillColor(sf::Color::White);
+	message.setPosition(400, 125);
+	message.setCharacterSize(18);
+
+	playButton = new Button(this);
+	playButton->setText("GRAJ");
+	playButton->setPosition(400, 50);
+
+	playButton->onClick = [this]()
+	{
+		auto validBoard = validateBoard();
+		if (!validBoard)
+			return;
+		board->isEditMode = false;
+		Game::SetGameMode(new PlayGameMode(board));
+	};
+}
 
 void EditorGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 	target.draw(*board, states);
 	target.draw(*playButton, states);
+	target.draw(message, states);
 }
 
 void EditorGameMode::update(sf::Time deltaTime)
 {
 	board->update(deltaTime);
 	playButton->update(deltaTime);
+	auto validBoard = validateBoard();
+	if (validBoard)
+		playButton->isEnabled = true;
+	else
+		playButton->isEnabled = false;
+}
+
+bool EditorGameMode::validateBoard()
+{
+	message.setString("");
+	board->ships.clear();
+	prepareBoard();
+	bool validBoard = true;
+
+	std::vector<ShipTile*> tiles;
+
+	auto isOtherShip = [&](int currentP, int nearP)
+	{
+		if (nearP / 10 < 0 || nearP / 10 > 9 || nearP % 10 < 0 || nearP % 10 > 9)
+			return;
+		if (board->tiles[nearP]->TileType == TileType::Ship)
+		{
+			auto currShip = ((ShipTile*)board->tiles[currentP])->ship;
+			auto nearShip = ((ShipTile*)board->tiles[nearP])->ship;
+			if(currShip != nearShip)
+				validBoard = false;
+		}
+	};
+
+	for(int p = 0; p< 100; p++)
+	{
+		if(board->tiles[p]->TileType == TileType::Ship)
+		{
+			isOtherShip(p, p - 11);
+			isOtherShip(p, p - 10);
+			isOtherShip(p, p - 9);
+			isOtherShip(p, p - 1);
+			isOtherShip(p, p + 1);
+			isOtherShip(p, p + 9);
+			isOtherShip(p, p + 10);
+			isOtherShip(p, p + 11);
+
+			if(!validBoard)
+			{
+				message.setString("Statki nie moga sie stykac, nawet rogami.\n");
+				break;
+			}
+		}
+	}
+
+	int tilesCounter = 0;
+	bool overSizeShip = false;
+	for (auto ship : board->ships)
+	{
+		if (ship->getTiles()->size() > 8) overSizeShip = true;
+		tilesCounter += ship->getTiles()->size();
+	}
+	if(overSizeShip) message.setString(message.getString() + "Maksymakny rozmiar statku to 8.\n");
+
+	if (tilesCounter > 40)
+	{
+		message.setString(message.getString() + "Dozwolonych 40 pol statkow, uzyles " + std::to_string(tilesCounter) + ".\n");
+		validBoard = false;
+	}
+
+	if (tilesCounter < 1)
+	{
+		message.setString(message.getString() + "Brak statkow.\n");
+		validBoard = false;
+	}
+
+	return validBoard;
 }
 
 void EditorGameMode::prepareBoard()
@@ -73,23 +169,4 @@ void EditorGameMode::prepareBoard()
 		auto ship = new Ship(shipTiles);
 		board->ships.push_back(ship);
 	}
-}
-
-
-
-EditorGameMode::EditorGameMode()
-{
-	board = new Board(this);
-	board->setPosition(200, 50);
-	board->isEditMode = true;
-
-	playButton = new Button(this);
-	playButton->setText("GRAJ");
-
-	playButton->onClick = [this]()
-	{
-		board->isEditMode = false;
-		prepareBoard();
-		Game::SetGameMode(new PlayGameMode(board));
-	};
 }

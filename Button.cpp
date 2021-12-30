@@ -21,16 +21,25 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Button::update(sf::Time delta_time)
 {
 	auto mouse = sf::Mouse::getPosition(*System::Window);
-	auto mouseVec = (parent->getTransform() * getTransform()).getInverse() * sf::Vector2f(mouse.x, mouse.y);
+	auto mouseVec = (parent->getTransform() * getTransform()).getInverse() * (System::Window->mapPixelToCoords(mouse));
 	if (shape.getLocalBounds().contains(mouseVec.x, mouseVec.y))
 	{
-		shape.setFillColor(sf::Color::Red);
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+
+		if (!isEnabled)
+			shape.setFillColor(sf::Color::Color(60, 60, 60));
+		else
+			shape.setFillColor(sf::Color::Color(199, 58, 58));
+		if (isEnabled && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			shape.setFillColor(sf::Color::Blue);
 			if(onClick)
 				onClick();
 		}
 	}
 	else
-		shape.setFillColor(sf::Color::Green);
+	{
+		if (!isEnabled)
+			shape.setFillColor(sf::Color::Color(100, 100, 100));
+		else
+			shape.setFillColor(sf::Color::Color(60, 200, 80));
+	}
 }
