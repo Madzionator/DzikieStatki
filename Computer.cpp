@@ -1,5 +1,7 @@
 #include "Computer.h"
 
+#include <iostream>
+
 Computer::Computer()
 {
 	for (int i = 0; i < 100; i++)
@@ -26,11 +28,16 @@ int Computer::getNextPosition()
 
 void Computer::wasHit(int position)
 {
-	auto exist = [&](int p)
+	auto canAdd = [&](int p)
 	{
 		for (auto pos : shipSurrounding)
 			if (pos == p)
+				return false;
+
+		for (auto pos : tilesLeft)
+			if (pos == p)
 				return true;
+
 		return false;
 	};
 
@@ -43,13 +50,13 @@ void Computer::wasHit(int position)
 	currentDamagedShip.push_back(position);
 	int y = position / 10, x = position % 10;
 
-	if (x > 0 && !exist(position - 1))
+	if (x > 0 && canAdd(position - 1))
 		add(position - 1);
-	if (y > 0 && !exist(position - 10))
+	if (y > 0 && canAdd(position - 10))
 		add(position - 10);
-	if (x < 9 && !exist(position + 1))
+	if (x < 9 && canAdd(position + 1))
 		add(position + 1);
-	if (y < 9 && !exist(position + 10))
+	if (y < 9 && canAdd(position + 10))
 		add(position + 10);
 }
 
@@ -59,6 +66,7 @@ void Computer::wasDestroyed(int position)
 	{
 		if (y < 0 || y > 9 || x < 0 || x > 9)
 			return;
+		std::cout << y << "-" << x <<"-"<<tilesLeft.size() << std::endl;
 		tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), (y*10 + x)), tilesLeft.end());
 	};
 
@@ -67,6 +75,8 @@ void Computer::wasDestroyed(int position)
 	for (auto pos : currentDamagedShip)
 	{
 		int y = pos / 10, x = pos % 10;
+		std::cout << pos << "-" << y << "-" << x << std::endl;
+
 		tryRemove(y - 1, x - 1);
 		tryRemove(y - 1, x );
 		tryRemove(y - 1, x + 1);

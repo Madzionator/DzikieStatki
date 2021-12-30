@@ -134,7 +134,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Program Files\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)sfml-*.dll" "$(TargetDir)" /Y</Command>
@@ -191,7 +191,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="arial.ttf" />
+    <Font Include="arial.ttf">
+      <DeploymentContent>false</DeploymentContent>
+    </Font>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />

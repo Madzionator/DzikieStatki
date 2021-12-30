@@ -12,6 +12,7 @@ int main()
 	if (!font.loadFromFile("arial.ttf"))
 	{
 		// error...
+		std::cout << "dupa" << std::endl;
 	}
 
 	System::Font = &font;
