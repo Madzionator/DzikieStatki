@@ -1,10 +1,10 @@
-﻿#include "PlayGameMode.h"
-
+﻿#include "PlayGameMode.h" 
 #include "Game.h"
 #include "GameOverMode.h"
 #include "ShipTile.h"
 #include "System.h"
 #include "WaterTile.h"
+#include <functional>
 
 PlayGameMode::PlayGameMode(Board* playerBoard)
 {
@@ -65,8 +65,8 @@ void PlayGameMode::update(sf::Time deltaTime)
 				else
 				{
 					playStateText.setString("Trafiono! Wybierz kolejne pole");
-					if(turnResult == TurnResult::Destroyed)
-						if(--pl2ShipLeft == 0)
+					if (turnResult == TurnResult::Destroyed)
+						if (--pl2ShipLeft == 0)
 							Game::SetGameMode(new GameOverMode(true));
 				}
 			}
@@ -82,14 +82,14 @@ void PlayGameMode::update(sf::Time deltaTime)
 		else if (turnResult == TurnResult::Destroyed)
 		{
 			computer->wasDestroyed(p);
-			if(--pl1ShipLeft == 0)
+			if (--pl1ShipLeft == 0)
 				Game::SetGameMode(new GameOverMode(false));
 		}
 
-		if(turnResult == TurnResult::Water)
+		if (turnResult == TurnResult::Water)
 			setPlayState(PlayState::PlayerTurn);
 	}
-	else if(playState == PlayState::ComputerThink)
+	else if (playState == PlayState::ComputerThink)
 	{
 		if (timer <= 0) setPlayState(PlayState::ComputerTurn);
 	}
@@ -121,28 +121,164 @@ TurnResult PlayGameMode::hitTile(Tile* tile)
 
 void PlayGameMode::MakeComputerBoard()
 {
-	auto tile1 = new ShipTile(board2);
-	auto tile2 = new ShipTile(board2);
-	auto tile3 = new ShipTile(board2);
-	auto tile4 = new ShipTile(board2);
-	tile1->setPosition(4 * 32, 3 * 32);
-	tile1->setState(ShipTileState::Undiscovered);
-	tile2->setPosition(4 * 32, 4 * 32);
-	tile2->setState(ShipTileState::Undiscovered);
-	tile3->setPosition(5 * 32, 4 * 32);
-	tile3->setState(ShipTileState::Undiscovered);
-	tile4->setPosition(8 * 32, 8 * 32);
-	tile4->setState(ShipTileState::Undiscovered);
-	board2->tiles[34] = tile1;
-	board2->tiles[44] = tile2;
-	board2->tiles[45] = tile3;
-	board2->tiles[88] = tile4;
-	std::vector<ShipTile*> statek1;
-	std::vector<ShipTile*> statek2;
-	statek1.push_back(tile1);
-	statek1.push_back(tile2);
-	statek1.push_back(tile3);
-	statek2.push_back(tile4);
-	board2->ships.push_back(new Ship(statek1));
-	board2->ships.push_back(new Ship(statek2));
+	int n = board1->ships.size();
+	int* lengths = new int[n];
+	for (int i = 0; i < n; i++)
+		lengths[i] = board1->ships[i]->getTiles()->size();
+
+	std::sort(lengths, lengths + n);
+
+	GenerateShips(lengths, n);
+	/*
+	while(true)
+	{
+		if (GenerateShips(lengths, n))
+			break;
+		for (auto ship : board1->ships)
+			delete ship;
+		for(int i = 0; i < 100; i++)
+		{
+			if(board2->tiles[i]->TileType == TileType::Ship)
+			{
+				delete board2->tiles[i];
+				auto tile = new WaterTile(board2);
+				tile->setPosition(i % 10 * 32, i / 10 * 32);
+				board2->tiles[i] = tile;
+			}
+		}
+	}
+	*/
+}
+
+bool PlayGameMode::GenerateShips(int *lengths, int n)
+{
+	std::vector<int> tilesLeft;
+	for (int i = 0; i < 100; i++)
+		tilesLeft.push_back(i);
+
+	//int iterarions = 0;
+
+	for (int shipNumber = 0; shipNumber < n; shipNumber++)
+	{
+		std::vector<int> shipPos;
+		std::vector<int> shipsurroundings;
+
+		auto exist = [&](int p)
+		{
+			for (int i = 0; i < shipsurroundings.size(); i++)
+				if (shipsurroundings[i] == p)
+					return true;
+			return false;
+		};
+
+		auto findIndex = [&](int p)
+		{
+			for (int i = 0; i < tilesLeft.size(); i++)
+				if (tilesLeft[i] == p)
+					return i;
+			return -1;
+		};
+
+		auto addSurroundings = [&](int p)
+		{
+			if (p / 10 > 0 && findIndex(p - 10) >= 0 && !exist(p - 10)) shipsurroundings.push_back(p - 10);
+			if (p / 10 < 9 && findIndex(p + 10) >= 0 && !exist(p + 10)) shipsurroundings.push_back(p + 10);
+			if (p % 10 > 0 && findIndex(p - 1) >= 0 && !exist(p - 1)) shipsurroundings.push_back(p - 1);
+			if (p % 10 < 9 && findIndex(p + 1) >= 0 && !exist(p + 1)) shipsurroundings.push_back(p + 1);
+		};
+
+		int size = lengths[shipNumber];
+		while (size > 0)
+		{
+			//iterarions++;
+			if (tilesLeft.size() == 0)
+				return false;
+
+			if (shipPos.size() == 0)
+			{
+				int r = rand() % tilesLeft.size();
+				int p = tilesLeft[r];
+				shipPos.push_back(p);
+				size--;
+				tilesLeft.erase(tilesLeft.begin() + r);
+				addSurroundings(p);
+			}
+			else if (shipsurroundings.size() == 0)
+			{
+				shipsurroundings.clear();
+				for (int s = 0; s < shipPos.size(); s++)
+					tilesLeft.push_back(shipPos[s]);
+				shipPos.clear();
+				size = lengths[shipNumber];
+			}
+			else
+			{
+				int i = -1, p;
+				do
+				{
+					int r = rand() % shipsurroundings.size();
+					p = shipsurroundings[r];
+					shipsurroundings.erase(shipsurroundings.begin() + r);
+					i = findIndex(p);
+				} while (i < 0 && shipsurroundings.size() > 0);
+
+				if (i == -1)
+					continue;
+
+				p = tilesLeft[i];
+				shipPos.push_back(p);
+				size--;
+				tilesLeft.erase(tilesLeft.begin() + i);
+				addSurroundings(p);
+			}
+
+			//if (iterarions > 255)
+			//	return false;
+		}
+
+		for (int s = 0; s < shipPos.size(); s++)
+		{
+			int p = shipPos[s];
+
+			int i = (p / 10 > 0 && p % 10 > 0) ? findIndex(p - 11) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+
+			i = i = (p / 10 > 0) ? findIndex(p - 10) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+
+			i = i = (p / 10 > 0 && p % 10 < 9) ? findIndex(p - 9) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+
+			i = i = (p % 10 > 0) ? findIndex(p - 1) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+
+			i = i = (p % 10 < 9) ? findIndex(p + 1) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+
+			i = i = (p / 10 < 9 && p % 10 > 0) ? findIndex(p + 9) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+
+			i = i = (p / 10 < 9) ? findIndex(p + 10) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+
+			i = (p / 10 < 9 && p % 10 < 9) ? findIndex(p + 11) : -1;
+			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
+		}
+
+		std::vector<ShipTile*> ship;
+		for (int i = 0; i < lengths[shipNumber]; i++)
+		{
+			auto tile = new ShipTile(board2);
+			int p = shipPos[i];
+			tile->setPosition(p % 10 * 32, p / 10 * 32);
+			tile->setState(ShipTileState::Undiscovered);
+			board2->tiles[p] = tile;
+			ship.push_back(tile);
+		}
+		board2->ships.push_back(new Ship(ship));
+
+		shipPos.clear();
+		shipsurroundings.clear();
+	}
+	return true;
 }
