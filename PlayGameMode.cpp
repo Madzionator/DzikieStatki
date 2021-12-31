@@ -130,16 +130,35 @@ void PlayGameMode::MakeComputerBoard()
 
 	while(true)
 	{
-		if (GenerateShips(lengths, n))
-			break;
-		delete board2;
-		board2 = new Board(this);
-		board2->setPosition(400, 100);
+		auto shipsP = GenerateShips(lengths, n);
+
+		if (shipsP.size() < n)
+		{
+			shipsP.clear();
+			continue;
+		}
+
+		for(auto shipP: shipsP)
+		{
+			std::vector<ShipTile*> ship;
+			for (int i = 0; i < shipP.size(); i++)
+			{
+				auto tile = new ShipTile(board2);
+				int p = shipP[i];
+				tile->setPosition(p % 10 * 32, p / 10 * 32);
+				tile->setState(ShipTileState::Undiscovered);
+				board2->tiles[p] = tile;
+				ship.push_back(tile);
+			}
+			board2->ships.push_back(new Ship(ship));
+		}
+		break;
 	}
 }
 
-bool PlayGameMode::GenerateShips(int *lengths, int n)
+std::vector<std::vector<int>> PlayGameMode::GenerateShips(int *lengths, int n)
 {
+	std::vector<std::vector<int>>ships;
 	std::vector<int> tilesLeft;
 	for (int i = 0; i < 100; i++)
 		tilesLeft.push_back(i);
@@ -180,7 +199,7 @@ bool PlayGameMode::GenerateShips(int *lengths, int n)
 		{
 			iterarions++;
 			if (tilesLeft.size() == 0)
-				return false;
+				return std::vector<std::vector<int>>();
 
 			if (shipPos.size() == 0)
 			{
@@ -221,7 +240,7 @@ bool PlayGameMode::GenerateShips(int *lengths, int n)
 			}
 
 			if (iterarions > 255)
-				return false;
+				return std::vector<std::vector<int>>();
 		}
 
 		for (int s = 0; s < shipPos.size(); s++)
@@ -253,20 +272,10 @@ bool PlayGameMode::GenerateShips(int *lengths, int n)
 			if (i >= 0) tilesLeft.erase(tilesLeft.begin() + i);
 		}
 
-		std::vector<ShipTile*> ship;
-		for (int i = 0; i < lengths[shipNumber]; i++)
-		{
-			auto tile = new ShipTile(board2);
-			int p = shipPos[i];
-			tile->setPosition(p % 10 * 32, p / 10 * 32);
-			tile->setState(ShipTileState::Undiscovered);
-			board2->tiles[p] = tile;
-			ship.push_back(tile);
-		}
-		board2->ships.push_back(new Ship(ship));
+		ships.push_back(shipPos);
 
 		shipPos.clear();
 		shipsurroundings.clear();
 	}
-	return true;
+	return ships;
 }

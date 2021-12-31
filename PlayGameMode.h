@@ -16,7 +16,7 @@ class PlayGameMode : public GameMode
 	int pl2ShipLeft;
 
 	void MakeComputerBoard();
-	bool GenerateShips(int* lengths, int n);
+	std::vector<std::vector<int>> GenerateShips(int* lengths, int n);
 	sf::Text playStateText;
 	void setPlayState(PlayState ps);
 	TurnResult hitTile(Tile* tile);
