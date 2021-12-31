@@ -128,26 +128,14 @@ void PlayGameMode::MakeComputerBoard()
 
 	std::sort(lengths, lengths + n);
 
-	GenerateShips(lengths, n);
-	/*
 	while(true)
 	{
 		if (GenerateShips(lengths, n))
 			break;
-		for (auto ship : board1->ships)
-			delete ship;
-		for(int i = 0; i < 100; i++)
-		{
-			if(board2->tiles[i]->TileType == TileType::Ship)
-			{
-				delete board2->tiles[i];
-				auto tile = new WaterTile(board2);
-				tile->setPosition(i % 10 * 32, i / 10 * 32);
-				board2->tiles[i] = tile;
-			}
-		}
+		delete board2;
+		board2 = new Board(this);
+		board2->setPosition(400, 100);
 	}
-	*/
 }
 
 bool PlayGameMode::GenerateShips(int *lengths, int n)
@@ -156,7 +144,7 @@ bool PlayGameMode::GenerateShips(int *lengths, int n)
 	for (int i = 0; i < 100; i++)
 		tilesLeft.push_back(i);
 
-	//int iterarions = 0;
+	int iterarions = 0;
 
 	for (int shipNumber = 0; shipNumber < n; shipNumber++)
 	{
@@ -190,7 +178,7 @@ bool PlayGameMode::GenerateShips(int *lengths, int n)
 		int size = lengths[shipNumber];
 		while (size > 0)
 		{
-			//iterarions++;
+			iterarions++;
 			if (tilesLeft.size() == 0)
 				return false;
 
@@ -232,8 +220,8 @@ bool PlayGameMode::GenerateShips(int *lengths, int n)
 				addSurroundings(p);
 			}
 
-			//if (iterarions > 255)
-			//	return false;
+			if (iterarions > 255)
+				return false;
 		}
 
 		for (int s = 0; s < shipPos.size(); s++)

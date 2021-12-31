@@ -54,3 +54,10 @@ void Board::update(sf::Time delta_time)
 			}
 	}
 }
+
+Board::~Board()
+{
+	ships.clear();
+	std::vector<Ship*>().swap(ships);
+	delete[] tiles;
+}

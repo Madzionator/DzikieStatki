@@ -60,8 +60,6 @@ bool EditorGameMode::validateBoard()
 
 	auto isOtherShip = [&](int currentP, int nearP)
 	{
-		if (nearP / 10 < 0 || nearP / 10 > 9 || nearP % 10 < 0 || nearP % 10 > 9)
-			return;
 		if (board->tiles[nearP]->TileType == TileType::Ship)
 		{
 			auto currShip = ((ShipTile*)board->tiles[currentP])->ship;
@@ -75,14 +73,14 @@ bool EditorGameMode::validateBoard()
 	{
 		if(board->tiles[p]->TileType == TileType::Ship)
 		{
-			isOtherShip(p, p - 11);
-			isOtherShip(p, p - 10);
-			isOtherShip(p, p - 9);
-			isOtherShip(p, p - 1);
-			isOtherShip(p, p + 1);
-			isOtherShip(p, p + 9);
-			isOtherShip(p, p + 10);
-			isOtherShip(p, p + 11);
+			if(p/10 > 0 && p%10 > 0) isOtherShip(p, p - 11);
+			if(p/10 > 0) isOtherShip(p, p - 10);
+			if(p/10 > 0 && p%10 < 9) isOtherShip(p, p - 9);
+			if(p%10 > 0) isOtherShip(p, p - 1);
+			if(p%10 < 9) isOtherShip(p, p + 1);
+			if(p/10 < 9 && p%10 > 0) isOtherShip(p, p + 9);
+			if(p/10 < 9) isOtherShip(p, p + 10);
+			if(p/10 < 9 && p%10 < 9) isOtherShip(p, p + 11);
 
 			if(!validBoard)
 			{
@@ -92,6 +90,12 @@ bool EditorGameMode::validateBoard()
 		}
 	}
 
+	if(board->ships.size() > 10)
+	{
+		message.setString(message.getString() + "Maksymakna liczba statkow to 10, zrobiles "+ std::to_string(board->ships.size())  +".\n");
+		validBoard = false;
+	}
+
 	int tilesCounter = 0;
 	bool overSizeShip = false;
 	for (auto ship : board->ships)
@@ -99,7 +103,11 @@ bool EditorGameMode::validateBoard()
 		if (ship->getTiles()->size() > 8) overSizeShip = true;
 		tilesCounter += ship->getTiles()->size();
 	}
-	if(overSizeShip) message.setString(message.getString() + "Maksymakny rozmiar statku to 8.\n");
+	if(overSizeShip)
+	{
+		message.setString(message.getString() + "Maksymakny rozmiar statku to 8.\n");
+		validBoard = false;
+	}
 
 	if (tilesCounter > 40)
 	{
