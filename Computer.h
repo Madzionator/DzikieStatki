@@ -7,6 +7,8 @@ class Computer
 	std::vector<int> currentDamagedShip;
 	std::vector<int> shipSurrounding;
 	std::vector<int> shipLengths;
+
+	int validatePosition(int p);
 	
 public:
 	Computer(std::vector<int> shipLengths);

@@ -1,4 +1,6 @@
 #include "Computer.h"
+#include "Tile.h"
+#include <functional>
 
 Computer::Computer(std::vector<int> shipLengths)
 {
@@ -11,9 +13,15 @@ int Computer::getNextPosition()
 {
 	if (currentDamagedShip.size() == 0)
 	{
-		int i = rand() % tilesLeft.size();
-		int p = tilesLeft[i];
-		tilesLeft.erase(tilesLeft.begin() + i);
+		int p, i = -1;
+		while (true)
+		{
+			i = rand() % tilesLeft.size();
+			p = tilesLeft[i];
+			p = validatePosition(p);
+			if (p != -1)
+				break;
+		}
 		return p;
 	}
 	else
@@ -69,6 +77,10 @@ void Computer::wasDestroyed(int position)
 	};
 
 	currentDamagedShip.push_back(position);
+
+	auto first = std::find(shipLengths.begin(), shipLengths.end(), currentDamagedShip.size());
+	if (first != shipLengths.end()) shipLengths.erase(first);
+
 	shipSurrounding.clear();
 	for (auto pos : currentDamagedShip)
 	{
@@ -84,4 +96,60 @@ void Computer::wasDestroyed(int position)
 		tryRemove(y + 1, x + 1);
 	}
 	currentDamagedShip.clear();
+}
+
+int Computer::validatePosition(int p)
+{
+	auto positions = std::vector<int>();
+
+	std::function<void(int)> findNeighbours = [&](int p)
+	{
+		if (std::find(tilesLeft.begin(), tilesLeft.end(), p) == tilesLeft.end())
+			return;
+
+		if (std::find(positions.begin(), positions.end(), p) != positions.end())
+			return;
+
+		positions.push_back(p);
+		if (p / 10 > 0) findNeighbours(p - 10);
+		if (p / 10 < 9) findNeighbours(p + 10);
+		if (p % 10 > 0) findNeighbours(p - 1);
+		if (p % 10 < 9) findNeighbours(p + 1);
+	};
+
+	findNeighbours(p);
+
+	if (positions.size() < shipLengths[0])
+	{
+		for (auto position : positions)
+			tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), position), tilesLeft.end());
+		return -1;
+	}
+
+	if (positions.size() > 10) {
+		tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), p), tilesLeft.end());
+		return p;
+	}
+
+	int bestPosIdx, bestDist = 2137;
+	for (int posIdx = 0; posIdx < positions.size(); posIdx++)
+	{
+		int dist = 0;
+		for (int i = 0; i < positions.size(); i++)
+		{
+			if(posIdx == i)
+				continue;
+
+			dist += abs(positions[posIdx] / 10 - positions[i] / 10);
+			dist += abs(positions[posIdx] % 10 - positions[i] % 10);
+		}
+		if(dist < bestDist)
+		{
+			bestDist = dist;
+			bestPosIdx = posIdx;
+		}
+	}
+
+	tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), positions[bestPosIdx]), tilesLeft.end());
+	return positions[bestPosIdx];
 }
