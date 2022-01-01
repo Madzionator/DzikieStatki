@@ -6,7 +6,7 @@ class Tile;
 
 class Board : public Entity
 {
-	sf::RectangleShape boardBackground;
+	sf::Sprite boardBackground;
 	const int tileSize = 32;
 	bool isDrawing = false;
 	TileType drawType;

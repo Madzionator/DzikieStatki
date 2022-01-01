@@ -1,6 +1,4 @@
 #include "Game.h"
-
-#include "EditorGameMode.h"
 #include "MenuGameMode.h"
 #include "System.h"
 
@@ -8,10 +6,10 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 GameMode* Game::mGameMode = nullptr;
 
 Game::Game()
-    : mWindow(sf::VideoMode(800, 480), "Statki")
+    : mWindow(sf::VideoMode(854, 480), "Statki")
 {
     System::Window = &mWindow;
-    SetGameMode(new EditorGameMode());
+    SetGameMode(new MenuGameMode());
 }
 
 void Game::Run()

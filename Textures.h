@@ -3,20 +3,32 @@
 
 class Textures
 {
+	Textures() {}
+	static Textures* instance;
 public:
-	static sf::Texture* WaterTileTexture;
-	static sf::Texture* WaterHitTileTexture;
-	static sf::Texture* ExplosionTexture;
-	static sf::Texture* VisibleShipTileTexture;
-	static sf::Texture* DestroyedShipTileTexture;
-	static sf::Texture* DamagedShipTileTexture;
+	static Textures* get()
+	{
+		return instance;
+	}
 
-	static sf::Sprite* WaterTileSprite;
-	static sf::Sprite* WaterHitTileSprite;
-	static sf::Sprite* ExplosionSprite;
-	static sf::Sprite* DestroyedShipTileSprite;
-	static sf::Sprite* VisibleShipTileSprite;
-	static sf::Sprite* DamagedShipTileSprite;
-
-	static void LoadTextures();
+	sf::Texture* BoardBackgroundTexture = new sf::Texture();
+	sf::Texture* WaterTileTexture = new sf::Texture();
+	sf::Texture* WaterHitTileTexture = new sf::Texture();
+	sf::Texture* ExplosionTexture = new sf::Texture();
+	sf::Texture* SplashTexture = new sf::Texture();
+	sf::Texture* VisibleShipTileTexture = new sf::Texture();
+	sf::Texture* DestroyedShipTileTexture = new sf::Texture();
+	sf::Texture* DamagedShipTileTexture = new sf::Texture();
+	
+	void LoadTextures()
+	{
+		BoardBackgroundTexture->loadFromFile("board-bg.png");
+		WaterTileTexture->loadFromFile("water.png");
+		WaterHitTileTexture->loadFromFile("waterHit.png");
+		ExplosionTexture->loadFromFile("explosion.png");
+		SplashTexture->loadFromFile("splash.png");
+		VisibleShipTileTexture->loadFromFile("DiscoveredShip.png");
+		DestroyedShipTileTexture->loadFromFile("DestroyedShip.png");
+		DamagedShipTileTexture->loadFromFile("DamagedShip.png");
+	}
 };

@@ -8,7 +8,7 @@
 EditorGameMode::EditorGameMode()
 {
 	board = new Board(this);
-	board->setPosition(50, 50);
+	board->setPosition(52, 92);
 	board->isEditMode = true;
 
 	message = sf::Text("", *System::Font);

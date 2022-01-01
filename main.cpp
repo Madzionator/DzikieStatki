@@ -5,6 +5,10 @@
 #include "System.h"
 #include "Textures.h"
 
+sf::RenderWindow* System::Window = nullptr;
+sf::Font* System::Font = nullptr;
+Textures* Textures::instance = new Textures();
+
 int main()
 {
 	srand(time(0));
@@ -15,7 +19,7 @@ int main()
 	}
 
 	System::Font = &font;
-	Textures::LoadTextures();
+	Textures::get()->LoadTextures();
 
 	auto game = new Game();
 	game->Run();

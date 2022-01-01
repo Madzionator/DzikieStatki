@@ -14,9 +14,6 @@
     <ClCompile Include="PlayGameMode.cpp">
       <Filter>Statki\GameModes</Filter>
     </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>Statki</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Statki\UI</Filter>
     </ClCompile>
@@ -32,17 +29,14 @@
     <ClCompile Include="ShipTile.cpp">
       <Filter>Statki\Tiles</Filter>
     </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Statki</Filter>
-    </ClCompile>
-    <ClCompile Include="Ship.cpp">
-      <Filter>Statki</Filter>
-    </ClCompile>
-    <ClCompile Include="Computer.cpp">
-      <Filter>Statki</Filter>
-    </ClCompile>
     <ClCompile Include="GameOverMode.cpp">
       <Filter>Statki\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="Computer.cpp">
+      <Filter>Statki\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Statki\Logic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +59,9 @@
     </Filter>
     <Filter Include="Statki\Tiles">
       <UniqueIdentifier>{1800f383-3780-4d81-a36c-1a9d3ac6da78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Statki\Logic">
+      <UniqueIdentifier>{5f043bfe-daf0-434b-bf41-eb0b839055c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,15 +107,15 @@
     <ClInclude Include="Animable.h">
       <Filter>Statki\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Ship.h">
-      <Filter>Statki</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Computer.h">
-      <Filter>Statki</Filter>
-    </ClInclude>
     <ClInclude Include="GameOverMode.h">
       <Filter>Statki\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="Computer.h">
+      <Filter>Statki\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Statki\Logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

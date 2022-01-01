@@ -21,6 +21,9 @@ class PlayGameMode : public GameMode
 	void setPlayState(PlayState ps);
 	TurnResult hitTile(Tile* tile);
 	int timer;
+	void PlayAnimation(Animable* animation, Board* board, Tile* tile);
+	Animable* explosionAnimation;
+	Animable* splashAnimation;
 public:
 	PlayGameMode(Board* board);
 

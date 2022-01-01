@@ -1,9 +1,7 @@
 #include "WaterTile.h"
-
 #include "Textures.h"
 
-WaterTile::WaterTile(Entity* parent)
-	: Tile(parent, Textures::WaterTileSprite)
+WaterTile::WaterTile(Entity* parent) : Tile(parent), tile(this, Textures::get()->WaterTileTexture)
 {
 	TileType = TileType::Water;
 }
@@ -12,9 +10,9 @@ void WaterTile::setState(WaterTileState state)
 {
 	tileState = state;
 	if (tileState == WaterTileState::Hit)
-		this->animable = new Animable(this, Textures::WaterHitTileSprite);
+		this->tile = Animable(this, Textures::get()->WaterHitTileTexture);
 	else
-		this->animable = new Animable(this, Textures::WaterTileSprite);
+		this->tile = Animable(this, Textures::get()->WaterTileTexture);
 }
 
 void WaterTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -22,10 +20,13 @@ void WaterTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 
 	Tile::draw(target, states);
+	target.draw(tile, states);
+	drawOverlay(target, states);
 }
 
-void WaterTile::update(sf::Time delta_time)
+void WaterTile::update(sf::Time deltaTime)
 {
-	Tile::update(delta_time);
+	Tile::update(deltaTime);
+	tile.update(deltaTime);
+	updateOverlay(deltaTime);
 }
-

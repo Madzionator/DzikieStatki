@@ -1,11 +1,12 @@
 #include "Board.h"
 #include "ShipTile.h"
+#include "Textures.h"
 #include "WaterTile.h"
 
 Board::Board(Entity* parent) : Entity(parent)
 {
-	boardBackground = sf::RectangleShape(sf::Vector2f(tileSize * tileCount, tileSize * tileCount));
-	boardBackground.setFillColor(sf::Color(100, 100, 100));
+	boardBackground = sf::Sprite(*Textures::get()->BoardBackgroundTexture);
+	boardBackground.setPosition(-42, -42);
 
 	tiles = new Tile* [tileCount * tileCount];
 	for (int y = 0; y < tileCount; y++)

@@ -6,6 +6,7 @@ enum class WaterTileState { Default, Hit };
 class WaterTile : public Tile
 {
 	WaterTileState tileState = WaterTileState::Default;
+	Animable tile;
 public:
 	WaterTile(Entity* parent);
 	void setState(WaterTileState state);

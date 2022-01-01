@@ -6,10 +6,10 @@ enum class TileType { Water, Ship };
 
 class Tile : public Entity
 {
-	sf::RectangleShape* overlay;
+	sf::RectangleShape overlay;
+	Animable waterBackground;
 protected:
-	Tile(Entity* parent, sf::Sprite* sprite);
-	Animable* animable;
+	Tile(Entity* parent);
 
 public:
 	int TileSize;
@@ -18,8 +18,11 @@ public:
 	bool IsMouseOver;
 	bool IsMouseDown;
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	virtual void update(sf::Time deltaTime) override;
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void update(sf::Time deltaTime) override;
+
+	void drawOverlay(sf::RenderTarget& target, sf::RenderStates states) const;
+	void updateOverlay(sf::Time deltaTime);
 };
 
 

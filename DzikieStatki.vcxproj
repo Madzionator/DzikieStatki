@@ -174,8 +174,6 @@
     <ClCompile Include="PlayGameMode.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="ShipTile.cpp" />
-    <ClCompile Include="System.cpp" />
-    <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="WaterTile.cpp" />
   </ItemGroup>

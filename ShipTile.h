@@ -1,6 +1,5 @@
 #pragma once
 #include "Ship.h"
-#include "Textures.h"
 #include "Tile.h"
 
 enum class ShipTileState { Undiscovered, Visible, Damaged, Destroyed };
@@ -8,6 +7,7 @@ enum class ShipTileState { Undiscovered, Visible, Damaged, Destroyed };
 class ShipTile : public Tile
 {
 	ShipTileState state = ShipTileState::Visible;
+	Animable tile;
 public:
 	Ship* ship;
 	ShipTile(Entity* parent);
