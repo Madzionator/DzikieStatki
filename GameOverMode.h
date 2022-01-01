@@ -11,6 +11,9 @@ class GameOverMode : public GameMode
 	Button* menuButton;
 	Board* board1;
 	Board* board2;
+	sf::Text result;
+	sf::RectangleShape header;
+	sf::RectangleShape backGround;
 	void prepareBoard();
 
 public:

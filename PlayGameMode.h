@@ -14,6 +14,9 @@ class PlayGameMode : public GameMode
 	Computer* computer;
 	int pl1ShipLeft;
 	int pl2ShipLeft;
+	sf::Text boardDesc1;
+	sf::Text boardDesc2;
+	sf::RectangleShape header;
 
 	void MakeComputerBoard();
 	std::vector<std::vector<int>> GenerateShips(int* lengths, int n);

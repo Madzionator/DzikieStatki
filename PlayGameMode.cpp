@@ -9,10 +9,28 @@
 
 PlayGameMode::PlayGameMode(Board* playerBoard)
 {
-	playStateText = sf::Text("", *System::Font);
-	playStateText.setFillColor(sf::Color::White);
+
 	board1 = playerBoard;
 	board2 = new Board(this);
+
+	playStateText = sf::Text("", *System::Font);
+	playStateText.setFillColor(sf::Color::White);
+	playStateText.setCharacterSize(24);
+	playStateText.setPosition(38, 10);
+	boardDesc1 = sf::Text("", *System::Font);
+	boardDesc2 = sf::Text("", *System::Font);
+	boardDesc1.setString("Moja plansza");
+	boardDesc2.setString("Plansza przeciwnika");
+	boardDesc1.setCharacterSize(18);
+	boardDesc2.setCharacterSize(18);
+	boardDesc1.setFillColor(sf::Color::White);
+	boardDesc2.setFillColor(sf::Color::White);
+	boardDesc1.setPosition(38, 65);
+	boardDesc2.setPosition(438, 65);
+
+	header.setSize(sf::Vector2f(System::Window->getSize().x, 50));
+	header.setFillColor(sf::Color::Color(21, 137, 181, 255));
+
 	MakeComputerBoard();
 
 	auto shipLengths = std::vector<int>();
@@ -25,8 +43,8 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 	pl2ShipLeft = board2->ships.size();
 	setPlayState(PlayState::PlayerTurn);
 
-	board1->setPosition(90, 100);
-	board2->setPosition(490, 100);
+	board1->setPosition(80, 140);
+	board2->setPosition(480, 140);
 
 	explosionAnimation = new Animable(this, Textures::get()->ExplosionTexture);
 	explosionAnimation->IsLooped = false;
@@ -42,6 +60,9 @@ void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(*board1, states);
 	target.draw(*board2, states);
+	target.draw(header, states);
+	target.draw(boardDesc1, states);
+	target.draw(boardDesc2, states);
 	target.draw(playStateText);
 	target.draw(*explosionAnimation, states);
 	target.draw(*splashAnimation, states);
