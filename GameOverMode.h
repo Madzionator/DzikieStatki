@@ -8,11 +8,12 @@ class GameOverMode : public GameMode
 {
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update(sf::Time deltaTime) override;
-	Board* board;
 	Button* menuButton;
+	Board* board1;
+	Board* board2;
 	void prepareBoard();
 
 public:
-	GameOverMode(bool isWin);
+	GameOverMode(bool isWin, Board* board1, Board* board2);
 };
 

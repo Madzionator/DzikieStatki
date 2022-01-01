@@ -1,9 +1,10 @@
 #include "Computer.h"
 
-Computer::Computer()
+Computer::Computer(std::vector<int> shipLengths)
 {
 	for (int i = 0; i < 100; i++)
 		tilesLeft.push_back(i);
+	this->shipLengths = shipLengths;
 }
 
 int Computer::getNextPosition()

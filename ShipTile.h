@@ -6,7 +6,7 @@ enum class ShipTileState { Undiscovered, Visible, Damaged, Destroyed };
 
 class ShipTile : public Tile
 {
-	ShipTileState state = ShipTileState::Visible;
+	ShipTileState state = ShipTileState::Undiscovered;
 	Animable tile;
 public:
 	Ship* ship;

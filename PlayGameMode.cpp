@@ -13,8 +13,14 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 	playStateText.setFillColor(sf::Color::White);
 	board1 = playerBoard;
 	board2 = new Board(this);
-	computer = new Computer();
 	MakeComputerBoard();
+
+	auto shipLengths = std::vector<int>();
+	for (auto s: board1->ships)
+		shipLengths.push_back(s->getTiles()->size());
+	std::sort(shipLengths.begin(), shipLengths.end());
+	computer = new Computer(shipLengths);
+
 	pl1ShipLeft = board1->ships.size();
 	pl2ShipLeft = board2->ships.size();
 	setPlayState(PlayState::PlayerTurn);
@@ -83,7 +89,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 					playStateText.setString("Trafiono! Wybierz kolejne pole");
 					if (turnResult == TurnResult::Destroyed)
 						if (--pl2ShipLeft == 0)
-							Game::SetGameMode(new GameOverMode(true));
+							Game::SetGameMode(new GameOverMode(true, board1, board2));
 				}
 			}
 	}
@@ -99,7 +105,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 		{
 			computer->wasDestroyed(p);
 			if (--pl1ShipLeft == 0)
-				Game::SetGameMode(new GameOverMode(false));
+				Game::SetGameMode(new GameOverMode(false, board1, board2));
 		}
 
 		if (turnResult == TurnResult::Hit || turnResult == TurnResult::Destroyed) {
@@ -149,7 +155,7 @@ void PlayGameMode::MakeComputerBoard()
 	for (int i = 0; i < n; i++)
 		lengths[i] = board1->ships[i]->getTiles()->size();
 
-	std::sort(lengths, lengths + n);
+	std::sort(lengths, lengths + n, std::greater<>());
 
 	while(true)
 	{
