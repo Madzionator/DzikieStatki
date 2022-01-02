@@ -38,19 +38,9 @@ void Game::SetGameMode(GameMode* gameMode)
 void Game::ProcessEvents()
 {
     sf::Event event{};
-
     while (mWindow.pollEvent(event))
-    {
-        switch (event.type)
-        {
-        case sf::Event::Closed:
-            mWindow.close();
-            break;
-        default:
-            break;
-        }
-
-    }
+	    if(event.type == sf::Event::Closed)
+		    mWindow.close();
 }
 
 void Game::Update(sf::Time deltaTime)
