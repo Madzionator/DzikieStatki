@@ -6,7 +6,9 @@ class MenuGameMode : public GameMode
 {
 	Button playButton;
 	Button exitButton;
+	Button instructionButton;
 
+	sf::Text author;
 	sf::Sprite background;
 	sf::Sprite logo;
 

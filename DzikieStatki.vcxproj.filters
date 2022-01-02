@@ -38,6 +38,9 @@
     <ClCompile Include="Ship.cpp">
       <Filter>Statki\Logic</Filter>
     </ClCompile>
+    <ClCompile Include="InstructionGameMode.cpp">
+      <Filter>Statki\GameModes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -116,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="Ship.h">
       <Filter>Statki\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="InstructionGameMode.h">
+      <Filter>Statki\GameModes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

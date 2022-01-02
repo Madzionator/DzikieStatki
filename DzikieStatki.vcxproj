@@ -169,6 +169,7 @@
     <ClCompile Include="EditorGameMode.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverMode.cpp" />
+    <ClCompile Include="InstructionGameMode.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuGameMode.cpp" />
     <ClCompile Include="PlayGameMode.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="Animable.h" />
     <ClInclude Include="GameOverMode.h" />
+    <ClInclude Include="InstructionGameMode.h" />
     <ClInclude Include="MenuGameMode.h" />
     <ClInclude Include="PlayGameMode.h" />
     <ClInclude Include="resource.h" />
