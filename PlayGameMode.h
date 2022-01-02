@@ -20,8 +20,8 @@ class PlayGameMode : public GameMode
 	sf::Text boardDesc2;
 	sf::Sprite background;
 	sf::RectangleShape header;
-	Animable* explosionAnimation;
-	Animable* splashAnimation;
+	Animable explosionAnimation;
+	Animable splashAnimation;
 
 	std::vector<std::vector<int>> GenerateShips(int* lengths, int n);
 	void MakeComputerBoard();

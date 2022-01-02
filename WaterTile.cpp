@@ -11,8 +11,10 @@ void WaterTile::setState(WaterTileState state)
 	tileState = state;
 	if (tileState == WaterTileState::Hit)
 		this->tile = Animable(this, Textures::get()->WaterHitTileTexture);
-	else
+	else if (tileState == WaterTileState::Default)
 		this->tile = Animable(this, Textures::get()->WaterTileTexture);
+	else if(tileState == WaterTileState::Blocked)
+		this->tile = Animable(this, Textures::get()->WaterBlockedTileTexture);
 }
 
 void WaterTile::draw(sf::RenderTarget& target, sf::RenderStates states) const

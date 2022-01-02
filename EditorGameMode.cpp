@@ -68,10 +68,9 @@ bool EditorGameMode::validateBoard()
 {
 	message.setString("");
 	board->ships.clear();
+	std::vector<Ship*>().swap(board->ships);
 	prepareBoard();
 	bool validBoard = true;
-
-	std::vector<ShipTile*> tiles;
 
 	auto isOtherShip = [&](int currentP, int nearP)
 	{
@@ -135,7 +134,7 @@ bool EditorGameMode::validateBoard()
 		message.setString(message.getString() + L"Brak statków.\n");
 		validBoard = false;
 	}
-
+	
 	return validBoard;
 }
 

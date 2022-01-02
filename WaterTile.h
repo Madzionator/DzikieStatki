@@ -1,7 +1,7 @@
 #pragma once
 #include "Tile.h"
 
-enum class WaterTileState { Default, Hit };
+enum class WaterTileState { Default, Hit, Blocked };
 
 class WaterTile : public Tile
 {

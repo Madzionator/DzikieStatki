@@ -37,7 +37,7 @@ void Board::update(sf::Time delta_time)
 	if (isEditMode)
 	{
 		for (int x = 0; x < tileCount * tileCount; x++)
-			if (tiles[x]->IsMouseDown)
+			if (tiles[x]->IsLeftMouseDown)
 			{
 				auto tile = tiles[x];
 				if(!isDrawing)

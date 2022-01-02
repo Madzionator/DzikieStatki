@@ -7,7 +7,9 @@
 #include "WaterTile.h"
 #include <functional>
 
-PlayGameMode::PlayGameMode(Board* playerBoard)
+PlayGameMode::PlayGameMode(Board* playerBoard) :
+	explosionAnimation(this, Textures::get()->ExplosionTexture),
+	splashAnimation(this, Textures::get()->SplashTexture)
 {
 	auto size = System::Window->getSize();
 	background = sf::Sprite(*Textures::get()->MenuBackgroundTexture, sf::IntRect(0, 0, size.x, size.y));
@@ -47,13 +49,11 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 	computerShipsLeft = board2->ships.size();
 	setPlayState(PlayState::PlayerTurn);
 
-	explosionAnimation = new Animable(this, Textures::get()->ExplosionTexture);
-	explosionAnimation->IsLooped = false;
-	explosionAnimation->IsAnimated = false;
-	splashAnimation = new Animable(this, Textures::get()->SplashTexture);
-	splashAnimation->IsLooped = false;
-	splashAnimation->IsAnimated = false;
-	splashAnimation->shape->setPosition(0, -5); //center splash to water hole
+	explosionAnimation.IsLooped = false;
+	explosionAnimation.IsAnimated = false;
+	splashAnimation.IsLooped = false;
+	splashAnimation.IsAnimated = false;
+	splashAnimation.shape->setPosition(0, -5); //center splash to water hole
 }
 
 void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -66,8 +66,8 @@ void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(boardDesc1, states);
 	target.draw(boardDesc2, states);
 	target.draw(playStateText);
-	target.draw(*explosionAnimation, states);
-	target.draw(*splashAnimation, states);
+	target.draw(explosionAnimation, states);
+	target.draw(splashAnimation, states);
 }
 
 void PlayGameMode::setPlayState(PlayState ps)
@@ -78,11 +78,11 @@ void PlayGameMode::setPlayState(PlayState ps)
 		timer = 400;
 	}
 	else if (playState == PlayState::ComputerThink) {
-		playStateText.setString("Komputer mysli nad ruchem");
+		playStateText.setString(L"Komputer myśli nad ruchem");
 		timer = 700;
 	}
 	else if (playState == PlayState::PlayerTurn)
-		playStateText.setString("Twoj ruch");
+		playStateText.setString(L"Twój ruch");
 }
 
 void PlayGameMode::update(sf::Time deltaTime)
@@ -91,24 +91,45 @@ void PlayGameMode::update(sf::Time deltaTime)
 
 	board1->update(deltaTime);
 	board2->update(deltaTime);
-	explosionAnimation->update(deltaTime);
-	splashAnimation->update(deltaTime);
+	explosionAnimation.update(deltaTime);
+	splashAnimation.update(deltaTime);
+
+	for (int x = 0; x < board2->tileCount * board2->tileCount; x++)
+		if (board2->tiles[x]->IsRightMouseClicked)
+		{
+			if(board2->tiles[x]->TileType == TileType::Water)
+			{
+				auto tile = (WaterTile*)board2->tiles[x];
+				if (tile->getState() == WaterTileState::Default)
+					tile->setState(WaterTileState::Blocked);
+				else if (tile->getState() == WaterTileState::Blocked)
+					tile->setState(WaterTileState::Default);
+			}
+			if (board2->tiles[x]->TileType == TileType::Ship)
+			{
+				auto tile = (ShipTile*)board2->tiles[x];
+				if (tile->getState() == ShipTileState::Undiscovered)
+					tile->setState(ShipTileState::Blocked);
+				else if (tile->getState() == ShipTileState::Blocked)
+					tile->setState(ShipTileState::Undiscovered);
+			}
+		}
 
 	if (playState == PlayState::PlayerTurn)
 	{
 		for (int x = 0; x < board2->tileCount * board2->tileCount; x++)
-			if (board2->tiles[x]->IsMouseClicked)
+			if (board2->tiles[x]->IsLeftMouseClicked)
 			{
 				auto turnResult = hitTile(board2->tiles[x]);
 				if (turnResult == TurnResult::Water) {
-					PlayAnimation(splashAnimation, board2, board2->tiles[x]);
+					PlayAnimation(&splashAnimation, board2, board2->tiles[x]);
 					setPlayState(PlayState::ComputerThink);
 				}
 				else if (turnResult == TurnResult::Error)
 					playStateText.setString("Wybierz poprawne pole!");
 				else
 				{
-					PlayAnimation(explosionAnimation, board2, board2->tiles[x]);
+					PlayAnimation(&explosionAnimation, board2, board2->tiles[x]);
 					playStateText.setString("Trafiono! Wybierz kolejne pole");
 					if (turnResult == TurnResult::Destroyed)
 						if (--computerShipsLeft == 0)
@@ -130,14 +151,14 @@ void PlayGameMode::update(sf::Time deltaTime)
 			if (--playerShipsLeft == 0)
 				Game::SetGameMode(new GameOverMode(false, board1, board2));
 		}
-
+		 
 		if (turnResult == TurnResult::Hit || turnResult == TurnResult::Destroyed) {
 			setPlayState(PlayState::ComputerThink);
-			PlayAnimation(explosionAnimation, board1, board1->tiles[p]);
+			PlayAnimation(&explosionAnimation, board1, board1->tiles[p]);
 		}
 
 		if (turnResult == TurnResult::Water) {
-			PlayAnimation(splashAnimation, board1, board1->tiles[p]);
+			PlayAnimation(&splashAnimation, board1, board1->tiles[p]);
 			setPlayState(PlayState::PlayerTurn);
 		}
 	}

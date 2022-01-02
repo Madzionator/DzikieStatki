@@ -17,6 +17,10 @@ void ShipTile::setState(ShipTileState state)
 		this->tile = Animable(this, Textures::get()->DamagedShipTileTexture);
 	else if (state == ShipTileState::Destroyed)
 		this->tile = Animable(this, Textures::get()->DestroyedShipTileTexture);
+	else if (state == ShipTileState::Blocked)
+		this->tile = Animable(this, Textures::get()->WaterBlockedTileTexture);
+	else if (state == ShipTileState::BlockedVisible)
+		this->tile = Animable(this, Textures::get()->BlockedVisibleShipTileTexture);
 }
 
 void ShipTile::draw(sf::RenderTarget& target, sf::RenderStates states) const

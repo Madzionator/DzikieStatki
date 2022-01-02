@@ -19,8 +19,10 @@ void Tile::update(sf::Time delta_time)
 	auto localMousePosition = (parent->getTransform() * getTransform()).getInverse().transformPoint(System::Window->mapPixelToCoords(mouseVec));
 
 	IsMouseOver = overlay.getLocalBounds().contains(localMousePosition);
-	IsMouseClicked = !IsMouseDown && IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
-	IsMouseDown = IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
+	IsLeftMouseClicked = !IsLeftMouseDown && IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
+	IsRightMouseClicked = !IsRightMouseDown && IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Right);
+	IsLeftMouseDown = IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
+	IsRightMouseDown = IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Right);
 
 	waterBackground.update(delta_time);
 }
@@ -32,5 +34,5 @@ void Tile::drawOverlay(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Tile::updateOverlay(sf::Time delta_time)
 {
-	overlay.setFillColor(sf::Color(255, 255, 0, (IsMouseDown ? 20 : 0) + (IsMouseOver ? 50 : 0)));
+	overlay.setFillColor(sf::Color(255, 255, 0, (IsLeftMouseDown ? 20 : 0) + (IsMouseOver ? 50 : 0)));
 }

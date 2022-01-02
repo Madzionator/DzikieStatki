@@ -20,8 +20,12 @@ GameOverMode::GameOverMode(bool isWin, Board* playerBoard, Board* computerBoard)
 	for (int i = 0; i < 100; i++)
 	{
 		if (board2->tiles[i]->TileType == TileType::Ship)
+		{
 			if (((ShipTile*)board2->tiles[i])->getState() == ShipTileState::Undiscovered)
 				((ShipTile*)board2->tiles[i])->setState(ShipTileState::Visible);
+			else if (((ShipTile*)board2->tiles[i])->getState() == ShipTileState::Blocked)
+				((ShipTile*)board2->tiles[i])->setState(ShipTileState::BlockedVisible);
+		}
 	}
 
 	shadow = sf::RectangleShape(sf::Vector2f(size));

@@ -2,7 +2,7 @@
 #include "Ship.h"
 #include "Tile.h"
 
-enum class ShipTileState { Undiscovered, Visible, Damaged, Destroyed };
+enum class ShipTileState { Undiscovered, Visible, Damaged, Destroyed, Blocked, BlockedVisible };
 
 class ShipTile : public Tile
 {
