@@ -12,17 +12,25 @@ EditorGameMode::EditorGameMode()
 	background = sf::Sprite(*Textures::get()->MenuBackgroundTexture, sf::IntRect(0, 0, size.x, size.y));
 	background.setColor(sf::Color(255, 255, 255, 100));
 
+	header.setSize(sf::Vector2f(System::Window->getSize().x, 50));
+	header.setFillColor(sf::Color(51, 164, 68, 255));
+
+	title = sf::Text("Rozstaw swoje statki", *System::Font);
+	title.setFillColor(sf::Color(55, 2, 2, 255));
+	title.setCharacterSize(24);
+	title.setPosition(38, 10);
+
 	board = new Board(this);
-	board->setPosition(52, 92);
+	board->setPosition(80, 140);
 	board->isEditMode = true;
 
 	message = sf::Text("", *System::Font);
 	message.setFillColor(sf::Color::White);
-	message.setPosition(400, 125);
+	message.setPosition(428, 173);
 	message.setCharacterSize(18);
 
 	playButton = new Button(this, L"Zagraj", sf::Vector2f(150,40), false);
-	playButton->setPosition(400, 50);
+	playButton->setPosition(428, 98);
 
 	playButton->onClick = [this]()
 	{
@@ -38,6 +46,8 @@ void EditorGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) con
 {
 	states.transform *= getTransform();
 	target.draw(background, states);
+	target.draw(header, states);
+	target.draw(title, states);
 	target.draw(*board, states);
 	target.draw(*playButton, states);
 	target.draw(message, states);
@@ -89,7 +99,7 @@ bool EditorGameMode::validateBoard()
 
 			if(!validBoard)
 			{
-				message.setString("Statki nie moga sie stykac, nawet rogami.\n");
+				message.setString(L"Statki nie mogą się stykać, nawet rogami.\n");
 				break;
 			}
 		}
@@ -97,7 +107,7 @@ bool EditorGameMode::validateBoard()
 
 	if(board->ships.size() > 10)
 	{
-		message.setString(message.getString() + "Maksymakna liczba statkow to 10, zrobiles "+ std::to_string(board->ships.size())  +".\n");
+		message.setString(message.getString() + L"Maksymalna liczba statków to 10, stworzyłeś "+ std::to_string(board->ships.size())  +".\n");
 		validBoard = false;
 	}
 
@@ -110,19 +120,19 @@ bool EditorGameMode::validateBoard()
 	}
 	if(overSizeShip)
 	{
-		message.setString(message.getString() + "Maksymakny rozmiar statku to 8.\n");
+		message.setString(message.getString() + L"Maksymakny rozmiar statku to 8.\n");
 		validBoard = false;
 	}
 
 	if (tilesCounter > 40)
 	{
-		message.setString(message.getString() + "Dozwolonych 40 pol statkow, uzyles " + std::to_string(tilesCounter) + ".\n");
+		message.setString(message.getString() + L"Dozwolonych 40 pól statków, użyłeś " + std::to_string(tilesCounter) + ".\n");
 		validBoard = false;
 	}
 
 	if (tilesCounter < 1)
 	{
-		message.setString(message.getString() + "Brak statkow.\n");
+		message.setString(message.getString() + L"Brak statków.\n");
 		validBoard = false;
 	}
 

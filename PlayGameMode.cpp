@@ -15,6 +15,8 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 
 	board1 = playerBoard;
 	board2 = new Board(this);
+	board1->setPosition(80, 140);
+	board2->setPosition(480, 140);
 
 	playStateText = sf::Text("", *System::Font);
 	playStateText.setFillColor(sf::Color::White);
@@ -22,8 +24,6 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 	playStateText.setPosition(38, 10);
 	boardDesc1 = sf::Text("", *System::Font);
 	boardDesc2 = sf::Text("", *System::Font);
-	boardDesc1.setString("Moja plansza");
-	boardDesc2.setString("Plansza przeciwnika");
 	boardDesc1.setCharacterSize(18);
 	boardDesc2.setCharacterSize(18);
 	boardDesc1.setFillColor(sf::Color::White);
@@ -40,14 +40,12 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 	for (auto s: board1->ships)
 		shipLengths.push_back(s->getTiles()->size());
 	std::sort(shipLengths.begin(), shipLengths.end());
+
 	computer = new Computer(shipLengths);
 
-	pl1ShipLeft = board1->ships.size();
-	pl2ShipLeft = board2->ships.size();
+	playerShipsLeft = board1->ships.size();
+	computerShipsLeft = board2->ships.size();
 	setPlayState(PlayState::PlayerTurn);
-
-	board1->setPosition(80, 140);
-	board2->setPosition(480, 140);
 
 	explosionAnimation = new Animable(this, Textures::get()->ExplosionTexture);
 	explosionAnimation->IsLooped = false;
@@ -99,7 +97,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 	if (playState == PlayState::PlayerTurn)
 	{
 		for (int x = 0; x < board2->tileCount * board2->tileCount; x++)
-			if (board2->tiles[x]->IsMouseDown)
+			if (board2->tiles[x]->IsMouseClicked)
 			{
 				auto turnResult = hitTile(board2->tiles[x]);
 				if (turnResult == TurnResult::Water) {
@@ -113,7 +111,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 					PlayAnimation(explosionAnimation, board2, board2->tiles[x]);
 					playStateText.setString("Trafiono! Wybierz kolejne pole");
 					if (turnResult == TurnResult::Destroyed)
-						if (--pl2ShipLeft == 0)
+						if (--computerShipsLeft == 0)
 							Game::SetGameMode(new GameOverMode(true, board1, board2));
 				}
 			}
@@ -129,7 +127,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 		else if (turnResult == TurnResult::Destroyed)
 		{
 			computer->wasDestroyed(p);
-			if (--pl1ShipLeft == 0)
+			if (--playerShipsLeft == 0)
 				Game::SetGameMode(new GameOverMode(false, board1, board2));
 		}
 
@@ -147,6 +145,9 @@ void PlayGameMode::update(sf::Time deltaTime)
 	{
 		if (timer <= 0) setPlayState(PlayState::ComputerTurn);
 	}
+	
+	boardDesc1.setString(L"Moja plansza (pozostałe statki: " + std::to_wstring(playerShipsLeft) + L")");
+	boardDesc2.setString(L"Plansza przeciwnika (pozostałe statki: " + std::to_wstring(computerShipsLeft) + L")");
 }
 
 TurnResult PlayGameMode::hitTile(Tile* tile)

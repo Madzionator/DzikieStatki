@@ -10,7 +10,7 @@ void ShipTile::setState(ShipTileState state)
 {
 	this->state = state;
 	if (state == ShipTileState::Undiscovered)
-		this->tile = Animable(this, Textures::get()->VisibleShipTileTexture);
+		this->tile = Animable(this, Textures::get()->WaterTileTexture);
 	else if (state == ShipTileState::Visible)
 		this->tile = Animable(this, Textures::get()->VisibleShipTileTexture);
 	else if (state == ShipTileState::Damaged)

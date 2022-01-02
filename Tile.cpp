@@ -19,6 +19,7 @@ void Tile::update(sf::Time delta_time)
 	auto localMousePosition = (parent->getTransform() * getTransform()).getInverse().transformPoint(System::Window->mapPixelToCoords(mouseVec));
 
 	IsMouseOver = overlay.getLocalBounds().contains(localMousePosition);
+	IsMouseClicked = !IsMouseDown && IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 	IsMouseDown = IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
 	waterBackground.update(delta_time);

@@ -7,13 +7,17 @@ class Button;
 class EditorGameMode : public GameMode
 {
 	sf::Sprite background;
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void update(sf::Time deltaTime) override;
+	sf::RectangleShape header;
+	sf::Text message;
+	sf::Text title;
 	Board* board;
 	Button* playButton;
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void update(sf::Time deltaTime) override;
 	bool validateBoard();
 	void prepareBoard();
-	sf::Text message;
+
+
 public:
 	EditorGameMode();
 };
