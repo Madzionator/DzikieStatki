@@ -9,6 +9,9 @@
 
 PlayGameMode::PlayGameMode(Board* playerBoard)
 {
+	auto size = System::Window->getSize();
+	background = sf::Sprite(*Textures::get()->MenuBackgroundTexture, sf::IntRect(0, 0, size.x, size.y));
+	background.setColor(sf::Color(255, 255, 255, 100));
 
 	board1 = playerBoard;
 	board2 = new Board(this);
@@ -58,6 +61,7 @@ PlayGameMode::PlayGameMode(Board* playerBoard)
 void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
+	target.draw(background, states);
 	target.draw(*board1, states);
 	target.draw(*board2, states);
 	target.draw(header, states);

@@ -4,7 +4,15 @@
 
 class MenuGameMode : public GameMode
 {
-	Button* button;
+	Button playButton;
+	Button exitButton;
+
+	sf::Sprite background;
+	sf::Sprite logo;
+
+	float backgroundMove = 0;
+	float backgroundSpeed = 5;
+	float backgroundSize;
 
 public:
 	MenuGameMode();

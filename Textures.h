@@ -11,7 +11,10 @@ public:
 		return instance;
 	}
 
+	sf::Texture* LogoTexture = new sf::Texture();
 	sf::Texture* BoardBackgroundTexture = new sf::Texture();
+	sf::Texture* MenuBackgroundTexture = new sf::Texture();
+
 	sf::Texture* WaterTileTexture = new sf::Texture();
 	sf::Texture* WaterHitTileTexture = new sf::Texture();
 	sf::Texture* ExplosionTexture = new sf::Texture();
@@ -22,7 +25,12 @@ public:
 	
 	void LoadTextures()
 	{
+		LogoTexture->loadFromFile("logo.png");
 		BoardBackgroundTexture->loadFromFile("board-bg.png");
+		MenuBackgroundTexture->loadFromFile("menu-bg.png");
+		MenuBackgroundTexture->setRepeated(true);
+		MenuBackgroundTexture->setSmooth(true);
+
 		WaterTileTexture->loadFromFile("water.png");
 		WaterHitTileTexture->loadFromFile("waterHit.png");
 		ExplosionTexture->loadFromFile("explosion.png");

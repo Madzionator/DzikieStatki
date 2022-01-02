@@ -13,7 +13,8 @@ class GameOverMode : public GameMode
 	Board* board2;
 	sf::Text result;
 	sf::RectangleShape header;
-	sf::RectangleShape backGround;
+	sf::RectangleShape shadow;
+	sf::Sprite background;
 	void prepareBoard();
 
 public:

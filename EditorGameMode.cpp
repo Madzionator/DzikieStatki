@@ -4,9 +4,14 @@
 #include "PlayGameMode.h"
 #include "ShipTile.h"
 #include "System.h"
+#include "Textures.h"
 
 EditorGameMode::EditorGameMode()
 {
+	auto size = System::Window->getSize();
+	background = sf::Sprite(*Textures::get()->MenuBackgroundTexture, sf::IntRect(0, 0, size.x, size.y));
+	background.setColor(sf::Color(255, 255, 255, 100));
+
 	board = new Board(this);
 	board->setPosition(52, 92);
 	board->isEditMode = true;
@@ -16,8 +21,7 @@ EditorGameMode::EditorGameMode()
 	message.setPosition(400, 125);
 	message.setCharacterSize(18);
 
-	playButton = new Button(this);
-	playButton->setText("GRAJ");
+	playButton = new Button(this, L"Zagraj", sf::Vector2f(150,40), false);
 	playButton->setPosition(400, 50);
 
 	playButton->onClick = [this]()
@@ -33,6 +37,7 @@ EditorGameMode::EditorGameMode()
 void EditorGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
+	target.draw(background, states);
 	target.draw(*board, states);
 	target.draw(*playButton, states);
 	target.draw(message, states);
@@ -44,9 +49,9 @@ void EditorGameMode::update(sf::Time deltaTime)
 	playButton->update(deltaTime);
 	auto validBoard = validateBoard();
 	if (validBoard)
-		playButton->isEnabled = true;
+		playButton->IsEnabled = true;
 	else
-		playButton->isEnabled = false;
+		playButton->IsEnabled = false;
 }
 
 bool EditorGameMode::validateBoard()

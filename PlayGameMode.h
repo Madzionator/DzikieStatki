@@ -8,6 +8,7 @@ enum class TurnResult { Error, Water, Hit, Destroyed };
 
 class PlayGameMode : public GameMode
 {
+	sf::Sprite background;
 	PlayState playState = PlayState::PlayerTurn;
 	Board* board1;
 	Board* board2;
