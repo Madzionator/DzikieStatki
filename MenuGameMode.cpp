@@ -12,7 +12,7 @@ MenuGameMode::MenuGameMode() :
 	background(*Textures::get()->MenuBackgroundTexture),
 	logo(*Textures::get()->LogoTexture)
 {
-	auto windowSize = System::Window->getSize();
+	auto windowSize = System::Window->getView().getSize();
 	backgroundSize = background.getTexture()->getSize().x;
 	background.setTextureRect(sf::IntRect(0, 0, windowSize.x + backgroundSize, windowSize.y + backgroundSize));
 	background.setColor(sf::Color(255, 255, 255, 100));

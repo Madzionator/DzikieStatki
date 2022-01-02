@@ -8,9 +8,9 @@ Board::Board(Entity* parent) : Entity(parent)
 	boardBackground = sf::Sprite(*Textures::get()->BoardBackgroundTexture);
 	boardBackground.setPosition(-42, -42);
 
-	tiles = new Tile* [tileCount * tileCount];
+	tiles = new Tile * [tileCount * tileCount];
 	for (int y = 0; y < tileCount; y++)
-		for (int x = 0; x < tileCount; x++) 
+		for (int x = 0; x < tileCount; x++)
 		{
 			auto tile = new WaterTile(this);
 			tiles[y * tileCount + x] = tile;
@@ -23,7 +23,7 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 
 	target.draw(boardBackground, states);
-	for (int i = 0; i < tileCount*tileCount; i++)
+	for (int i = 0; i < tileCount * tileCount; i++)
 		target.draw(*tiles[i], states);
 }
 
@@ -40,7 +40,7 @@ void Board::update(sf::Time delta_time)
 			if (tiles[x]->IsLeftMouseDown)
 			{
 				auto tile = tiles[x];
-				if(!isDrawing)
+				if (!isDrawing)
 				{
 					isDrawing = true;
 					drawType = tile->TileType;

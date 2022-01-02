@@ -11,7 +11,7 @@ PlayGameMode::PlayGameMode(Board* playerBoard) :
 	explosionAnimation(this, Textures::get()->ExplosionTexture),
 	splashAnimation(this, Textures::get()->SplashTexture)
 {
-	auto size = System::Window->getSize();
+	auto size = System::Window->getView().getSize();
 	background = sf::Sprite(*Textures::get()->MenuBackgroundTexture, sf::IntRect(0, 0, size.x, size.y));
 	background.setColor(sf::Color(255, 255, 255, 100));
 
@@ -33,13 +33,13 @@ PlayGameMode::PlayGameMode(Board* playerBoard) :
 	boardDesc1.setPosition(38, 65);
 	boardDesc2.setPosition(438, 65);
 
-	header.setSize(sf::Vector2f(System::Window->getSize().x, 50));
+	header.setSize(sf::Vector2f(System::Window->getView().getSize().x, 50));
 	header.setFillColor(sf::Color::Color(21, 137, 181, 255));
 
 	MakeComputerBoard();
 
 	auto shipLengths = std::vector<int>();
-	for (auto s: board1->ships)
+	for (auto s : board1->ships)
 		shipLengths.push_back(s->getTiles()->size());
 	std::sort(shipLengths.begin(), shipLengths.end());
 
@@ -94,23 +94,36 @@ void PlayGameMode::update(sf::Time deltaTime)
 	explosionAnimation.update(deltaTime);
 	splashAnimation.update(deltaTime);
 
+	if (isDrawingBlock && !sf::Mouse::isButtonPressed(sf::Mouse::Right)) isDrawingBlock = false;
+
 	for (int x = 0; x < board2->tileCount * board2->tileCount; x++)
-		if (board2->tiles[x]->IsRightMouseClicked)
+		if (board2->tiles[x]->IsRightMouseDown)
 		{
-			if(board2->tiles[x]->TileType == TileType::Water)
+			if (board2->tiles[x]->TileType == TileType::Water)
 			{
 				auto tile = (WaterTile*)board2->tiles[x];
-				if (tile->getState() == WaterTileState::Default)
+				if (!isDrawingBlock)
+				{
+					isDrawingBlock = true;
+					shouldDrawBlocks = tile->getState() != WaterTileState::Blocked;
+				}
+				if (shouldDrawBlocks && tile->getState() == WaterTileState::Default)
 					tile->setState(WaterTileState::Blocked);
-				else if (tile->getState() == WaterTileState::Blocked)
+				else if (!shouldDrawBlocks && tile->getState() == WaterTileState::Blocked)
 					tile->setState(WaterTileState::Default);
+
 			}
-			if (board2->tiles[x]->TileType == TileType::Ship)
+			else if (board2->tiles[x]->TileType == TileType::Ship)
 			{
 				auto tile = (ShipTile*)board2->tiles[x];
-				if (tile->getState() == ShipTileState::Undiscovered)
+				if (!isDrawingBlock)
+				{
+					isDrawingBlock = true;
+					shouldDrawBlocks = tile->getState() != ShipTileState::Blocked;
+				}
+				if (shouldDrawBlocks && tile->getState() == ShipTileState::Undiscovered)
 					tile->setState(ShipTileState::Blocked);
-				else if (tile->getState() == ShipTileState::Blocked)
+				else if (!shouldDrawBlocks && tile->getState() == ShipTileState::Blocked)
 					tile->setState(ShipTileState::Undiscovered);
 			}
 		}
@@ -151,7 +164,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 			if (--playerShipsLeft == 0)
 				Game::SetGameMode(new GameOverMode(false, board1, board2));
 		}
-		 
+
 		if (turnResult == TurnResult::Hit || turnResult == TurnResult::Destroyed) {
 			setPlayState(PlayState::ComputerThink);
 			PlayAnimation(&explosionAnimation, board1, board1->tiles[p]);
@@ -166,7 +179,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 	{
 		if (timer <= 0) setPlayState(PlayState::ComputerTurn);
 	}
-	
+
 	boardDesc1.setString(L"Moja plansza (pozostałe statki: " + std::to_wstring(playerShipsLeft) + L")");
 	boardDesc2.setString(L"Plansza przeciwnika (pozostałe statki: " + std::to_wstring(computerShipsLeft) + L")");
 }
@@ -204,7 +217,7 @@ void PlayGameMode::MakeComputerBoard()
 
 	std::sort(lengths, lengths + n, std::greater<>());
 
-	while(true)
+	while (true)
 	{
 		auto shipsP = GenerateShips(lengths, n);
 
@@ -214,13 +227,12 @@ void PlayGameMode::MakeComputerBoard()
 			continue;
 		}
 
-		for(auto shipP: shipsP)
+		for (auto& shipP : shipsP)
 		{
 			std::vector<ShipTile*> ship;
-			for (int i = 0; i < shipP.size(); i++)
+			for (int p : shipP)
 			{
 				auto tile = new ShipTile(board2);
-				int p = shipP[i];
 				tile->setPosition(p % 10 * 32, p / 10 * 32);
 				tile->setState(ShipTileState::Undiscovered);
 				board2->tiles[p] = tile;
@@ -232,7 +244,7 @@ void PlayGameMode::MakeComputerBoard()
 	}
 }
 
-std::vector<std::vector<int>> PlayGameMode::GenerateShips(int *lengths, int n)
+std::vector<std::vector<int>> PlayGameMode::GenerateShips(int* lengths, int n)
 {
 	std::vector<std::vector<int>>ships;
 	std::vector<int> tilesLeft;
@@ -359,6 +371,6 @@ std::vector<std::vector<int>> PlayGameMode::GenerateShips(int *lengths, int n)
 void PlayGameMode::PlayAnimation(Animable* animation, Board* board, Tile* tile)
 {
 	animation->Restart();
-	animation->setPosition(board->getTransform()*tile->getPosition());
+	animation->setPosition(board->getTransform() * tile->getPosition());
 	animation->IsAnimated = true;
 }

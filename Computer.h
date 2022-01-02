@@ -9,11 +9,10 @@ class Computer
 	std::vector<int> shipLengths;
 
 	int validatePosition(int p);
-	
+
 public:
 	Computer(std::vector<int> shipLengths);
 	int getNextPosition();
 	void wasHit(int position);
 	void wasDestroyed(int position);
 };
-

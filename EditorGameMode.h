@@ -21,4 +21,3 @@ class EditorGameMode : public GameMode
 public:
 	EditorGameMode();
 };
-

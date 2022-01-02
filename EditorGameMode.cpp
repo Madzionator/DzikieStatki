@@ -8,11 +8,11 @@
 
 EditorGameMode::EditorGameMode()
 {
-	auto size = System::Window->getSize();
+	auto size = System::Window->getView().getSize();
 	background = sf::Sprite(*Textures::get()->MenuBackgroundTexture, sf::IntRect(0, 0, size.x, size.y));
 	background.setColor(sf::Color(255, 255, 255, 100));
 
-	header.setSize(sf::Vector2f(System::Window->getSize().x, 50));
+	header.setSize(sf::Vector2f(System::Window->getView().getSize().x, 50));
 	header.setFillColor(sf::Color(51, 164, 68, 255));
 
 	title = sf::Text("Rozstaw swoje statki", *System::Font);
@@ -29,7 +29,7 @@ EditorGameMode::EditorGameMode()
 	message.setPosition(428, 173);
 	message.setCharacterSize(18);
 
-	playButton = new Button(this, L"Zagraj", sf::Vector2f(150,40), false);
+	playButton = new Button(this, L"Zagraj", sf::Vector2f(150, 40), false);
 	playButton->setPosition(428, 98);
 
 	playButton->onClick = [this]()
@@ -78,25 +78,25 @@ bool EditorGameMode::validateBoard()
 		{
 			auto currShip = ((ShipTile*)board->tiles[currentP])->ship;
 			auto nearShip = ((ShipTile*)board->tiles[nearP])->ship;
-			if(currShip != nearShip)
+			if (currShip != nearShip)
 				validBoard = false;
 		}
 	};
 
-	for(int p = 0; p< 100; p++)
+	for (int p = 0; p < 100; p++)
 	{
-		if(board->tiles[p]->TileType == TileType::Ship)
+		if (board->tiles[p]->TileType == TileType::Ship)
 		{
-			if(p/10 > 0 && p%10 > 0) isOtherShip(p, p - 11);
-			if(p/10 > 0) isOtherShip(p, p - 10);
-			if(p/10 > 0 && p%10 < 9) isOtherShip(p, p - 9);
-			if(p%10 > 0) isOtherShip(p, p - 1);
-			if(p%10 < 9) isOtherShip(p, p + 1);
-			if(p/10 < 9 && p%10 > 0) isOtherShip(p, p + 9);
-			if(p/10 < 9) isOtherShip(p, p + 10);
-			if(p/10 < 9 && p%10 < 9) isOtherShip(p, p + 11);
+			if (p / 10 > 0 && p % 10 > 0) isOtherShip(p, p - 11);
+			if (p / 10 > 0) isOtherShip(p, p - 10);
+			if (p / 10 > 0 && p % 10 < 9) isOtherShip(p, p - 9);
+			if (p % 10 > 0) isOtherShip(p, p - 1);
+			if (p % 10 < 9) isOtherShip(p, p + 1);
+			if (p / 10 < 9 && p % 10 > 0) isOtherShip(p, p + 9);
+			if (p / 10 < 9) isOtherShip(p, p + 10);
+			if (p / 10 < 9 && p % 10 < 9) isOtherShip(p, p + 11);
 
-			if(!validBoard)
+			if (!validBoard)
 			{
 				message.setString(L"Statki nie mogą się stykać, nawet rogami.\n");
 				break;
@@ -104,9 +104,9 @@ bool EditorGameMode::validateBoard()
 		}
 	}
 
-	if(board->ships.size() > 10)
+	if (board->ships.size() > 10)
 	{
-		message.setString(message.getString() + L"Maksymalna liczba statków to 10, stworzyłeś "+ std::to_string(board->ships.size())  +".\n");
+		message.setString(message.getString() + L"Maksymalna liczba statków to 10, stworzyłeś " + std::to_string(board->ships.size()) + ".\n");
 		validBoard = false;
 	}
 
@@ -117,7 +117,7 @@ bool EditorGameMode::validateBoard()
 		if (ship->getTiles()->size() > 8) overSizeShip = true;
 		tilesCounter += ship->getTiles()->size();
 	}
-	if(overSizeShip)
+	if (overSizeShip)
 	{
 		message.setString(message.getString() + L"Maksymakny rozmiar statku to 8.\n");
 		validBoard = false;
@@ -134,7 +134,7 @@ bool EditorGameMode::validateBoard()
 		message.setString(message.getString() + L"Brak statków.\n");
 		validBoard = false;
 	}
-	
+
 	return validBoard;
 }
 
@@ -162,7 +162,7 @@ void EditorGameMode::prepareBoard()
 
 		shipList.back().push_back((ShipTile*)tile);
 
-		if(y < board->tileCount - 1)
+		if (y < board->tileCount - 1)
 			buildShip(y + 1, x);
 		if (y > 0)
 			buildShip(y - 1, x);

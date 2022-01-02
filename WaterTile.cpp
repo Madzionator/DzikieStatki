@@ -1,7 +1,7 @@
 #include "WaterTile.h"
 #include "Textures.h"
 
-WaterTile::WaterTile(Entity* parent) : Tile(parent), tile(this, Textures::get()->Empty)
+WaterTile::WaterTile(Entity* parent) : Tile(parent)
 {
 	TileType = TileType::Water;
 	setState(WaterTileState::Default);
@@ -11,11 +11,11 @@ void WaterTile::setState(WaterTileState state)
 {
 	tileState = state;
 	if (tileState == WaterTileState::Hit)
-		this->tile = Animable(this, Textures::get()->WaterHitTileTexture);
+		this->tile = sf::Sprite(*Textures::get()->WaterHitTileTexture);
 	else if (tileState == WaterTileState::Default)
-		this->tile = Animable(this, Textures::get()->Empty);
-	else if(tileState == WaterTileState::Blocked)
-		this->tile = Animable(this, Textures::get()->WaterBlockedTileTexture);
+		this->tile = sf::Sprite(*Textures::get()->Empty);
+	else if (tileState == WaterTileState::Blocked)
+		this->tile = sf::Sprite(*Textures::get()->WaterBlockedTileTexture);
 }
 
 void WaterTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -30,6 +30,5 @@ void WaterTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void WaterTile::update(sf::Time deltaTime)
 {
 	Tile::update(deltaTime);
-	tile.update(deltaTime);
 	updateOverlay(deltaTime);
 }

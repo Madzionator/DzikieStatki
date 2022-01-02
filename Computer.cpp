@@ -73,7 +73,7 @@ void Computer::wasDestroyed(int position)
 	{
 		if (y < 0 || y > 9 || x < 0 || x > 9)
 			return;
-		tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), (y*10 + x)), tilesLeft.end());
+		tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), (y * 10 + x)), tilesLeft.end());
 	};
 
 	currentDamagedShip.push_back(position);
@@ -87,7 +87,7 @@ void Computer::wasDestroyed(int position)
 		int y = pos / 10, x = pos % 10;
 
 		tryRemove(y - 1, x - 1);
-		tryRemove(y - 1, x );
+		tryRemove(y - 1, x);
 		tryRemove(y - 1, x + 1);
 		tryRemove(y, x - 1);
 		tryRemove(y, x + 1);
@@ -137,13 +137,13 @@ int Computer::validatePosition(int p)
 		int dist = 0;
 		for (int i = 0; i < positions.size(); i++)
 		{
-			if(posIdx == i)
+			if (posIdx == i)
 				continue;
 
 			dist += abs(positions[posIdx] / 10 - positions[i] / 10);
 			dist += abs(positions[posIdx] % 10 - positions[i] % 10);
 		}
-		if(dist < bestDist)
+		if (dist < bestDist)
 		{
 			bestDist = dist;
 			bestPosIdx = posIdx;

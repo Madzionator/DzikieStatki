@@ -10,7 +10,6 @@ public:
 	{
 		return instance;
 	}
-
 	sf::Texture* Empty = new sf::Texture();
 
 	sf::Texture* LogoTexture = new sf::Texture();
@@ -26,7 +25,7 @@ public:
 	sf::Texture* DestroyedShipTileTexture = new sf::Texture();
 	sf::Texture* DamagedShipTileTexture = new sf::Texture();
 	sf::Texture* BlockedVisibleShipTileTexture = new sf::Texture();
-	
+
 	void LoadTextures()
 	{
 		Empty->create(32, 32);

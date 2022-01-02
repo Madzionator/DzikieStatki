@@ -14,10 +14,8 @@ private:
 	void ProcessEvents();
 	void Update(sf::Time deltaTime);
 	void Render();
-	//void HandlePlayerInput();
 	sf::RenderWindow mWindow;
 	static const sf::Time TimePerFrame;
 
 	static GameMode* mGameMode;
 };
-

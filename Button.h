@@ -1,6 +1,5 @@
 #pragma once
 #include <functional>
-
 #include "Entity.h"
 
 class Button : public Entity
@@ -23,5 +22,3 @@ public:
 	void setSize(sf::Vector2f vec) { shape.setSize(vec); updateSize(); }
 	void setCentered(bool centered) { IsCentered = centered; updateSize(); }
 };
-
-

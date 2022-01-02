@@ -1,5 +1,4 @@
 #include "Ship.h"
-
 #include "ShipTile.h"
 
 bool Ship::checkDestroyed()

@@ -23,6 +23,9 @@ class PlayGameMode : public GameMode
 	Animable explosionAnimation;
 	Animable splashAnimation;
 
+	bool isDrawingBlock;
+	bool shouldDrawBlocks;
+
 	std::vector<std::vector<int>> GenerateShips(int* lengths, int n);
 	void MakeComputerBoard();
 	void setPlayState(PlayState ps);
@@ -35,4 +38,3 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update(sf::Time deltaTime) override;
 };
-

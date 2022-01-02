@@ -6,7 +6,7 @@ enum class WaterTileState { Default, Hit, Blocked };
 class WaterTile : public Tile
 {
 	WaterTileState tileState = WaterTileState::Default;
-	Animable tile;
+	sf::Sprite tile;
 public:
 	WaterTile(Entity* parent);
 	void setState(WaterTileState state);
@@ -14,4 +14,3 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update(sf::Time deltaTime) override;
 };
-

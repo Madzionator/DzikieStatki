@@ -55,14 +55,12 @@ void Game::ProcessEvents()
 
 void Game::Update(sf::Time deltaTime)
 {
-	mGameMode->update(deltaTime);
+    mGameMode->update(deltaTime);
 }
 
 void Game::Render()
 {
-	mWindow.clear();
-
-	mWindow.draw(*mGameMode);
-
-	mWindow.display();
+    mWindow.clear();
+    mWindow.draw(*mGameMode);
+    mWindow.display();
 }

@@ -11,4 +11,3 @@ public:
 	Ship(std::vector<ShipTile*> shiptiles);
 	auto getTiles() const { return &tiles; }
 };
-

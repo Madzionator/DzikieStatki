@@ -27,5 +27,3 @@ public:
 	void drawOverlay(sf::RenderTarget& target, sf::RenderStates states) const;
 	void updateOverlay(sf::Time deltaTime);
 };
-
-

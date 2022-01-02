@@ -1,7 +1,7 @@
 #include "ShipTile.h"
 #include "Textures.h"
 
-ShipTile::ShipTile(Entity* parent) : Tile(parent), tile(this, Textures::get()->Empty)
+ShipTile::ShipTile(Entity* parent) : Tile(parent)
 {
 	TileType = TileType::Ship;
 	setState(ShipTileState::Visible);
@@ -10,26 +10,18 @@ ShipTile::ShipTile(Entity* parent) : Tile(parent), tile(this, Textures::get()->E
 void ShipTile::setState(ShipTileState state)
 {
 	this->state = state;
-	switch(state)
-	{
-	case ShipTileState::Undiscovered:
-		this->tile = Animable(this, Textures::get()->Empty);
-		break;
-	case ShipTileState::Visible:
-		this->tile = Animable(this, Textures::get()->VisibleShipTileTexture);
-		break;
-	case ShipTileState::Damaged:
-		this->tile = Animable(this, Textures::get()->DamagedShipTileTexture);
-		break;
-	case ShipTileState::Destroyed:
-		this->tile = Animable(this, Textures::get()->DestroyedShipTileTexture);
-		break;
-	case ShipTileState::Blocked:
-		this->tile = Animable(this, Textures::get()->WaterBlockedTileTexture);
-		break;
-	case ShipTileState::BlockedVisible:
-		this->tile = Animable(this, Textures::get()->BlockedVisibleShipTileTexture);
-	}
+	if (state == ShipTileState::Undiscovered)
+		this->tile = sf::Sprite(*Textures::get()->Empty);
+	else if (state == ShipTileState::Visible)
+		this->tile = sf::Sprite(*Textures::get()->VisibleShipTileTexture);
+	else if (state == ShipTileState::Damaged)
+		this->tile = sf::Sprite(*Textures::get()->DamagedShipTileTexture);
+	else if (state == ShipTileState::Destroyed)
+		this->tile = sf::Sprite(*Textures::get()->DestroyedShipTileTexture);
+	else if (state == ShipTileState::Blocked)
+		this->tile = sf::Sprite(*Textures::get()->WaterBlockedTileTexture);
+	else if (state == ShipTileState::BlockedVisible)
+		this->tile = sf::Sprite(*Textures::get()->BlockedVisibleShipTileTexture);
 }
 
 void ShipTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -44,6 +36,5 @@ void ShipTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void ShipTile::update(sf::Time deltaTime)
 {
 	Tile::update(deltaTime);
-	tile.update(deltaTime);
 	updateOverlay(deltaTime);
 }
