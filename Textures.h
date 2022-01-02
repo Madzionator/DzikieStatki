@@ -11,6 +11,8 @@ public:
 		return instance;
 	}
 
+	sf::Texture* Empty = new sf::Texture();
+
 	sf::Texture* LogoTexture = new sf::Texture();
 	sf::Texture* BoardBackgroundTexture = new sf::Texture();
 	sf::Texture* MenuBackgroundTexture = new sf::Texture();
@@ -27,6 +29,8 @@ public:
 	
 	void LoadTextures()
 	{
+		Empty->create(32, 32);
+
 		LogoTexture->loadFromFile("logo.png");
 		BoardBackgroundTexture->loadFromFile("board-bg.png");
 		MenuBackgroundTexture->loadFromFile("menu-bg.png");

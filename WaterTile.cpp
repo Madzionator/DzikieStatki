@@ -1,9 +1,10 @@
 #include "WaterTile.h"
 #include "Textures.h"
 
-WaterTile::WaterTile(Entity* parent) : Tile(parent), tile(this, Textures::get()->WaterTileTexture)
+WaterTile::WaterTile(Entity* parent) : Tile(parent), tile(this, Textures::get()->Empty)
 {
 	TileType = TileType::Water;
+	setState(WaterTileState::Default);
 }
 
 void WaterTile::setState(WaterTileState state)
@@ -12,7 +13,7 @@ void WaterTile::setState(WaterTileState state)
 	if (tileState == WaterTileState::Hit)
 		this->tile = Animable(this, Textures::get()->WaterHitTileTexture);
 	else if (tileState == WaterTileState::Default)
-		this->tile = Animable(this, Textures::get()->WaterTileTexture);
+		this->tile = Animable(this, Textures::get()->Empty);
 	else if(tileState == WaterTileState::Blocked)
 		this->tile = Animable(this, Textures::get()->WaterBlockedTileTexture);
 }
