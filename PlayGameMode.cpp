@@ -54,6 +54,7 @@ PlayGameMode::PlayGameMode(Board* playerBoard) :
 	splashAnimation.IsLooped = false;
 	splashAnimation.IsAnimated = false;
 	splashAnimation.shape->setPosition(0, -5); //center splash to water hole
+	splashAnimation.setPosition(-32, -32);
 }
 
 void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
