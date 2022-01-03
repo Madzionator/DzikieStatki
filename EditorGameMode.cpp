@@ -54,8 +54,11 @@ EditorGameMode::EditorGameMode(bool isClassicGame)
 
 	generateShipsButton->onClick = [this]()
 	{
+		for (auto s : board->ships)
+			delete s;
 		board->ships.clear();
 		std::vector<Ship*>().swap(board->ships);
+
 		for (int p = 0; p < 100; p++)
 			if (board->tiles[p]->TileType == TileType::Ship)
 			{

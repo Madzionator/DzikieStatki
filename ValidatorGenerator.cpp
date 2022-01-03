@@ -2,34 +2,29 @@
 
 void ValidatorGenerator::makeBoard(Board* board, int* shipLengths, int n, bool isPlayer)
 {
-	while (true)
-	{
-		auto shipsP = generateShips(shipLengths, n);
+    auto shipsP = std::vector<std::vector<int>>(n);
 
-		if (shipsP.size() < n)
-		{
-			shipsP.clear();
-			continue;
-		}
+    do
+    {
+        shipsP.clear();
+        shipsP = generateShips(shipLengths, n);
+    } while (shipsP.size() < n);
 
-		for (auto& shipP : shipsP)
-		{
-			std::vector<ShipTile*> ship;
-			for (int p : shipP)
-			{
-				auto tile = new ShipTile(board);
-				tile->setPosition(p % 10 * 32, p / 10 * 32);
-				if (isPlayer)
-					tile->setState(ShipTileState::Visible);
-				else
-					tile->setState(ShipTileState::Undiscovered);
-				board->tiles[p] = tile;
-				ship.push_back(tile);
-			}
-			board->ships.push_back(new Ship(ship));
-		}
-		break;
-	}
+    for (auto& shipP : shipsP)
+    {
+        std::vector<ShipTile*> ship;
+        for (int p : shipP)
+        {
+            auto tile = new ShipTile(board);
+			tile->setState(isPlayer ? ShipTileState::Visible : ShipTileState::Undiscovered);
+            tile->setPosition(p % 10 * 32, p / 10 * 32);
+            if (board->tiles[p] != nullptr)
+                delete board->tiles[p];
+            board->tiles[p] = tile;
+            ship.push_back(tile);
+        }
+        board->ships.push_back(new Ship(ship));
+    }
 }
 
 std::vector<std::vector<int>> ValidatorGenerator::generateShips(int* shipLengths, int n)
