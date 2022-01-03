@@ -178,6 +178,7 @@ xcopy "$(ProjectDir)*.ttf" "$(TargetDir)" /Y</Command>
     <ClCompile Include="MenuGameMode.cpp" />
     <ClCompile Include="PlayGameMode.cpp" />
     <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="ValidatorGenerator.cpp" />
     <ClCompile Include="ShipTile.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="WaterTile.cpp" />
@@ -213,6 +214,7 @@ xcopy "$(ProjectDir)*.ttf" "$(TargetDir)" /Y</Command>
     <ClInclude Include="PlayGameMode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Ship.h" />
+    <ClInclude Include="ValidatorGenerator.h" />
     <ClInclude Include="ShipTile.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Textures.h" />

@@ -26,7 +26,6 @@ class PlayGameMode : public GameMode
 	bool isDrawingBlock;
 	bool shouldDrawBlocks;
 
-	std::vector<std::vector<int>> GenerateShips(int* lengths, int n);
 	void MakeComputerBoard();
 	void setPlayState(PlayState ps);
 	void PlayAnimation(Animable* animation, Board* board, Tile* tile);

@@ -7,9 +7,10 @@
 #include "Textures.h"
 
 MenuGameMode::MenuGameMode() :
-	playButton(this, L"Zagraj", sf::Vector2f(150, 40), true),
-	instructionButton(this, L"Jak grać?", sf::Vector2f(150, 40), true),
-	exitButton(this, L"Wyjdź", sf::Vector2f(150, 40), true),
+	playButton(this, L"Zagraj", sf::Vector2f(175, 40), true),
+	classicPlayButton(this, L"Tryb klasyczny", sf::Vector2f(175, 40), true),
+	instructionButton(this, L"Jak grać?", sf::Vector2f(175, 40), true),
+	exitButton(this, L"Wyjdź", sf::Vector2f(175, 40), true),
 	background(*Textures::get()->MenuBackgroundTexture),
 	logo(*Textures::get()->LogoTexture)
 {
@@ -18,14 +19,17 @@ MenuGameMode::MenuGameMode() :
 	background.setTextureRect(sf::IntRect(0, 0, windowSize.x + backgroundSize, windowSize.y + backgroundSize));
 	background.setColor(sf::Color(255, 255, 255, 100));
 
-	playButton.onClick = [] { Game::SetGameMode(new EditorGameMode()); };
-	playButton.setPosition(windowSize.x / 2, 300);
+	playButton.onClick = [] { Game::SetGameMode(new EditorGameMode(false)); };
+	playButton.setPosition(windowSize.x / 2, 275);
+
+	classicPlayButton.onClick = [] { Game::SetGameMode(new EditorGameMode(true)); };
+	classicPlayButton.setPosition(windowSize.x / 2, 325);
 
 	instructionButton.onClick = [] { Game::SetGameMode(new InstructionGameMode()); };
-	instructionButton.setPosition(windowSize.x / 2, 350);
+	instructionButton.setPosition(windowSize.x / 2, 375);
 
 	exitButton.onClick = [] { exit(0); };
-	exitButton.setPosition(windowSize.x / 2, 400);
+	exitButton.setPosition(windowSize.x / 2, 425);
 
 	auto logoWidth = logo.getLocalBounds().width;
 	logo.setPosition(windowSize.x / 2 - logoWidth / 2, 50);
@@ -41,6 +45,7 @@ void MenuGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(background, states);
 	target.draw(playButton, states);
+	target.draw(classicPlayButton, states);
 	target.draw(exitButton, states);
 	target.draw(instructionButton, states);
 	target.draw(logo, states);
@@ -50,6 +55,7 @@ void MenuGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void MenuGameMode::update(sf::Time deltaTime)
 {
 	playButton.update(deltaTime);
+	classicPlayButton.update(deltaTime);
 	instructionButton.update(deltaTime);
 	exitButton.update(deltaTime);
 

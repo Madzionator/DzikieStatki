@@ -5,6 +5,7 @@
 class MenuGameMode : public GameMode
 {
 	Button playButton;
+	Button classicPlayButton;
 	Button exitButton;
 	Button instructionButton;
 

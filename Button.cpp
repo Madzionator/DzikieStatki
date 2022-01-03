@@ -46,6 +46,7 @@ void Button::update(sf::Time delta_time)
 	auto mouseVec = (parent->getTransform() * getTransform()).getInverse() * (System::Window->mapPixelToCoords(mouse));
 
 	IsMouseOver = shape.getGlobalBounds().contains(mouseVec.x, mouseVec.y);
+	IsMouseClicked = IsMouseDown && IsMouseOver && !sf::Mouse::isButtonPressed(sf::Mouse::Left);
 	IsMouseDown = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
 	if (IsMouseOver)
@@ -55,7 +56,7 @@ void Button::update(sf::Time delta_time)
 		}
 		else
 			shape.setFillColor(sf::Color(199, 58, 58));
-		if (IsEnabled && IsMouseDown) {
+		if (IsEnabled && IsMouseClicked) {
 			shape.setFillColor(sf::Color::Blue);
 			if (onClick)
 				onClick();

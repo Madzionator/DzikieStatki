@@ -14,6 +14,7 @@ public:
 	bool IsEnabled = true;
 	bool IsMouseOver = false;
 	bool IsMouseDown = false;
+	bool IsMouseClicked = false;
 	bool IsCentered = false;
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

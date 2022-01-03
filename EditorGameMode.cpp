@@ -2,12 +2,15 @@
 #include "Button.h"
 #include "Game.h"
 #include "PlayGameMode.h"
+#include "ValidatorGenerator.h"
 #include "ShipTile.h"
 #include "System.h"
 #include "Textures.h"
+#include "WaterTile.h"
 
-EditorGameMode::EditorGameMode()
+EditorGameMode::EditorGameMode(bool isClassicGame)
 {
+	this->isClassicGame = isClassicGame;
 	auto size = System::Window->getView().getSize();
 	background = sf::Sprite(*Textures::get()->MenuBackgroundTexture, sf::IntRect(0, 0, size.x, size.y));
 	background.setColor(sf::Color(255, 255, 255, 100));
@@ -32,6 +35,9 @@ EditorGameMode::EditorGameMode()
 	playButton = new Button(this, L"Zagraj", sf::Vector2f(150, 40), false);
 	playButton->setPosition(428, 98);
 
+	generateShipsButton = new Button(this, L"Generuj statki", sf::Vector2f(200, 40), false);
+	generateShipsButton->setPosition(593, 98);
+
 	playButton->onClick = [this]()
 	{
 		auto validBoard = validateBoard();
@@ -39,6 +45,23 @@ EditorGameMode::EditorGameMode()
 			return;
 		board->isEditMode = false;
 		Game::SetGameMode(new PlayGameMode(board));
+	};
+
+	generateShipsButton->onClick = [this]()
+	{
+		board->ships.clear();
+		std::vector<Ship*>().swap(board->ships);
+		for (int p = 0; p < 100; p++)
+			if (board->tiles[p]->TileType == TileType::Ship)
+			{
+				delete board->tiles[p];
+				auto tile = new WaterTile(board);
+				tile->setPosition(p % 10 * 32, p / 10 * 32);
+				board->tiles[p] = tile;
+			}
+		int* lengths = new int[10] {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+		ValidatorGenerator::makeBoard(board, lengths, 10, true);
+		delete[] lengths;
 	};
 }
 
@@ -50,6 +73,7 @@ void EditorGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) con
 	target.draw(title, states);
 	target.draw(*board, states);
 	target.draw(*playButton, states);
+	if(isClassicGame) target.draw(*generateShipsButton, states);
 	target.draw(message, states);
 }
 
@@ -62,6 +86,7 @@ void EditorGameMode::update(sf::Time deltaTime)
 		playButton->IsEnabled = true;
 	else
 		playButton->IsEnabled = false;
+	if (isClassicGame) generateShipsButton->update(deltaTime);
 }
 
 bool EditorGameMode::validateBoard()
@@ -70,72 +95,9 @@ bool EditorGameMode::validateBoard()
 	board->ships.clear();
 	std::vector<Ship*>().swap(board->ships);
 	prepareBoard();
-	bool validBoard = true;
-
-	auto isOtherShip = [&](int currentP, int nearP)
-	{
-		if (board->tiles[nearP]->TileType == TileType::Ship)
-		{
-			auto currShip = ((ShipTile*)board->tiles[currentP])->ship;
-			auto nearShip = ((ShipTile*)board->tiles[nearP])->ship;
-			if (currShip != nearShip)
-				validBoard = false;
-		}
-	};
-
-	for (int p = 0; p < 100; p++)
-	{
-		if (board->tiles[p]->TileType == TileType::Ship)
-		{
-			if (p / 10 > 0 && p % 10 > 0) isOtherShip(p, p - 11);
-			if (p / 10 > 0) isOtherShip(p, p - 10);
-			if (p / 10 > 0 && p % 10 < 9) isOtherShip(p, p - 9);
-			if (p % 10 > 0) isOtherShip(p, p - 1);
-			if (p % 10 < 9) isOtherShip(p, p + 1);
-			if (p / 10 < 9 && p % 10 > 0) isOtherShip(p, p + 9);
-			if (p / 10 < 9) isOtherShip(p, p + 10);
-			if (p / 10 < 9 && p % 10 < 9) isOtherShip(p, p + 11);
-
-			if (!validBoard)
-			{
-				message.setString(L"Statki nie mogą się stykać, nawet rogami.\n");
-				break;
-			}
-		}
-	}
-
-	if (board->ships.size() > 10)
-	{
-		message.setString(message.getString() + L"Maksymalna liczba statków to 10, stworzyłeś " + std::to_string(board->ships.size()) + ".\n");
-		validBoard = false;
-	}
-
-	int tilesCounter = 0;
-	bool overSizeShip = false;
-	for (auto ship : board->ships)
-	{
-		if (ship->getTiles()->size() > 8) overSizeShip = true;
-		tilesCounter += ship->getTiles()->size();
-	}
-	if (overSizeShip)
-	{
-		message.setString(message.getString() + L"Maksymakny rozmiar statku to 8.\n");
-		validBoard = false;
-	}
-
-	if (tilesCounter > 40)
-	{
-		message.setString(message.getString() + L"Dozwolonych 40 pól statków, użyłeś " + std::to_string(tilesCounter) + ".\n");
-		validBoard = false;
-	}
-
-	if (tilesCounter < 1)
-	{
-		message.setString(message.getString() + L"Brak statków.\n");
-		validBoard = false;
-	}
-
-	return validBoard;
+	if (isClassicGame)
+		return ValidatorGenerator::validateForClassicGame(board, &message);
+	return ValidatorGenerator::validateForGame(board, &message);
 }
 
 void EditorGameMode::prepareBoard()

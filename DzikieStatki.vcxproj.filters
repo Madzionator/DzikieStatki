@@ -41,6 +41,9 @@
     <ClCompile Include="InstructionGameMode.cpp">
       <Filter>Statki\GameModes</Filter>
     </ClCompile>
+    <ClCompile Include="ValidatorGenerator.cpp">
+      <Filter>Statki\Logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="sfml-graphics-2.dll" />
@@ -122,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="InstructionGameMode.h">
       <Filter>Statki\GameModes</Filter>
+    </ClInclude>
+    <ClInclude Include="ValidatorGenerator.h">
+      <Filter>Statki\Logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
