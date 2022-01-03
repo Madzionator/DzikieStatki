@@ -1,6 +1,7 @@
 ﻿#include "EditorGameMode.h"
 #include "Button.h"
 #include "Game.h"
+#include "MenuGameMode.h"
 #include "PlayGameMode.h"
 #include "ValidatorGenerator.h"
 #include "ShipTile.h"
@@ -34,6 +35,10 @@ EditorGameMode::EditorGameMode(bool isClassicGame)
 
 	playButton = new Button(this, L"Zagraj", sf::Vector2f(150, 40), false);
 	playButton->setPosition(428, 98);
+
+	menuButton = new Button(this, L"Menu", sf::Vector2f(100, 40), false);
+	menuButton->setPosition(749, 5);
+	menuButton->onClick = [] { Game::SetGameMode(new MenuGameMode()); };
 
 	generateShipsButton = new Button(this, L"Generuj statki", sf::Vector2f(200, 40), false);
 	generateShipsButton->setPosition(593, 98);
@@ -73,6 +78,7 @@ void EditorGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) con
 	target.draw(title, states);
 	target.draw(*board, states);
 	target.draw(*playButton, states);
+	target.draw(*menuButton, states);
 	if(isClassicGame) target.draw(*generateShipsButton, states);
 	target.draw(message, states);
 }
@@ -81,6 +87,7 @@ void EditorGameMode::update(sf::Time deltaTime)
 {
 	board->update(deltaTime);
 	playButton->update(deltaTime);
+	menuButton->update(deltaTime);
 	auto validBoard = validateBoard();
 	if (validBoard)
 		playButton->IsEnabled = true;

@@ -6,6 +6,8 @@
 #include "Textures.h"
 #include "WaterTile.h"
 #include <functional>
+
+#include "MenuGameMode.h"
 #include "ValidatorGenerator.h"
 
 PlayGameMode::PlayGameMode(Board* playerBoard) :
@@ -37,6 +39,11 @@ PlayGameMode::PlayGameMode(Board* playerBoard) :
 	header.setSize(sf::Vector2f(System::Window->getView().getSize().x, 50));
 	header.setFillColor(sf::Color::Color(21, 137, 181, 255));
 
+	menuButton = new Button(this, L"Menu", sf::Vector2f(100, 40), false, sf::Color(13, 155, 191));
+	menuButton->setPosition(749, 5);
+	menuButton->setTextColor(sf::Color::White);
+	menuButton->onClick = [] { Game::SetGameMode(new MenuGameMode()); };
+
 	MakeComputerBoard();
 
 	auto shipLengths = std::vector<int>();
@@ -65,6 +72,7 @@ void PlayGameMode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(*board1, states);
 	target.draw(*board2, states);
 	target.draw(header, states);
+	target.draw(*menuButton, states);
 	target.draw(boardDesc1, states);
 	target.draw(boardDesc2, states);
 	target.draw(playStateText);
@@ -105,6 +113,7 @@ void PlayGameMode::update(sf::Time deltaTime)
 
 	board1->update(deltaTime);
 	board2->update(deltaTime);
+	menuButton->update(deltaTime);
 	explosionAnimation.update(deltaTime);
 	splashAnimation.update(deltaTime);
 

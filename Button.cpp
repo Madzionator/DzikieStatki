@@ -1,9 +1,10 @@
 #include "Button.h"
 #include "System.h"
 
-Button::Button(Entity* parent, std::wstring txt, sf::Vector2f size, bool centered) : Entity(parent),
+Button::Button(Entity* parent, std::wstring txt, sf::Vector2f size, bool centered, sf::Color buttonEnableColor) : Entity(parent),
 IsCentered(centered)
 {
+	this->buttonEnableColor = buttonEnableColor;
 	shape = sf::RectangleShape(sf::Vector2f(50, 50));
 	shape.setOutlineColor(sf::Color::Magenta);
 	shape.setFillColor(sf::Color::Green);
@@ -67,6 +68,6 @@ void Button::update(sf::Time delta_time)
 		if (!IsEnabled)
 			shape.setFillColor(sf::Color(100, 100, 100));
 		else
-			shape.setFillColor(sf::Color(60, 200, 80));
+			shape.setFillColor(buttonEnableColor);
 	}
 }

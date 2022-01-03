@@ -30,13 +30,13 @@ InstructionGameMode::InstructionGameMode() : menuButton(this, L"Powrót do menu"
 	subtitle2.setPosition(18, 230);
 	subtitle3.setPosition(18, 355);
 
-	std::wstring desc1 = LR"(Gra pozwala na tworzenie statków o dowolnym kształcie, który jesteś w stanie sobie wyobrazić.
-	Spełniać musi on jednak kilka zasad dla zachowania sprawiedliwej rozgrywki:
-	- musi istnieć przynajmniej jeden statek,
-	- długość statku nie może przekroczyć 8 pól,
-	- statki nie mogą się ze sobą stykać, nawet po skosie,
-	- na planszy może się znajdować maksymalnie 10 statków,
-	- suma pól zajętych przez statki nie może przekroczyć 40.)" ;
+	std::wstring desc1 = LR"(	Główna gra pozwala na tworzenie statków o dowolnym kształcie, który jesteś w stanie sobie wyobrazić.
+Spełniać musi on jednak kilka zasad dla zachowania sprawiedliwej rozgrywki. Musi istnieć przynajmniej jeden statek,
+długość statku nie może przekroczyć 8 pól, statki nie mogą się ze sobą stykać, nawet po skosie. Dodatkowo
+na planszy może się znajdować maksymalnie 10 statków a suma pól zajętych przez statki nie może przekroczyć 40.
+	W grze klasycznej musimy zawsze mieć 10 statków: 4 jednomasztowce, 3 dwumasztowce, 2 trójmasztowce
+i 1 czteromasztowiec. Ze względu na tak precyzyjne założenia możemy używać przycisku generuj statki, by program
+stworzył je za nas.)" ;
 
 	std::wstring desc2 = LR"(Komputer wygenerował tę samą liczbę statków co Ty (o tej samej długości, ale innym możliwym kształcie i pozycji).
 Spróbuj zestrzelić je wszystkie zanim komputer zestrzeli Twoje! Pierwszy ruch należy do Ciebie, strzały wykonujemy

@@ -1,5 +1,6 @@
 #pragma once
 #include "Board.h"
+#include "Button.h"
 #include "Computer.h"
 #include "GameMode.h"
 
@@ -15,6 +16,7 @@ class PlayGameMode : public GameMode
 	int playerShipsLeft;
 	int computerShipsLeft;
 	int timer;
+	Button* menuButton;
 	sf::Text playStateText;
 	sf::Text boardDesc1;
 	sf::Text boardDesc2;
