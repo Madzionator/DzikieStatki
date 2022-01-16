@@ -11,7 +11,6 @@ class ShipTile : public Tile
 public:
 	Ship* ship;
 	ShipTile(Entity* parent);
-	~ShipTile() { delete ship; }
 	void setState(ShipTileState state);
 	ShipTileState getState() { return state; }
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

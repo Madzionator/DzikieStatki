@@ -19,6 +19,7 @@ class EditorGameMode : public GameMode
 	bool validateBoard();
 	void prepareBoard();
 	bool isClassicGame;
+	bool prepareNextMode = false;
 
 public:
 	EditorGameMode(bool isClassicGame);

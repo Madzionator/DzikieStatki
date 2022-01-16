@@ -17,3 +17,12 @@ Ship::Ship(std::vector<ShipTile*> shiptiles)
 	for (auto tile : shiptiles)
 		tile->ship = this;
 }
+
+Ship::~Ship()
+{
+	int i = tiles.size() - 1;
+	/*for (i; i >= 0; i--)
+		delete tiles[i];*/
+	tiles.clear();
+	std::vector<ShipTile*>().swap(tiles);
+}

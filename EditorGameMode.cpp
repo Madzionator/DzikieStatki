@@ -50,6 +50,7 @@ EditorGameMode::EditorGameMode(bool isClassicGame)
 			return;
 		board->isEditMode = false;
 		Game::SetGameMode(new PlayGameMode(board));
+		prepareNextMode = true;
 	};
 
 	generateShipsButton->onClick = [this]()
@@ -67,6 +68,7 @@ EditorGameMode::EditorGameMode(bool isClassicGame)
 				tile->setPosition(p % 10 * 32, p / 10 * 32);
 				board->tiles[p] = tile;
 			}
+
 		int* lengths = new int[10] {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
 		ValidatorGenerator::makeBoard(board, lengths, 10, true);
 		delete[] lengths;
@@ -97,6 +99,8 @@ void EditorGameMode::update(sf::Time deltaTime)
 	else
 		playButton->IsEnabled = false;
 	if (isClassicGame) generateShipsButton->update(deltaTime);
+	if (prepareNextMode)
+		board = nullptr;
 }
 
 bool EditorGameMode::validateBoard()
@@ -105,6 +109,7 @@ bool EditorGameMode::validateBoard()
 	board->ships.clear();
 	std::vector<Ship*>().swap(board->ships);
 	prepareBoard();
+
 	if (isClassicGame)
 		return ValidatorGenerator::validateForClassicGame(board, &message);
 	return ValidatorGenerator::validateForGame(board, &message);
@@ -113,6 +118,12 @@ bool EditorGameMode::validateBoard()
 void EditorGameMode::prepareBoard()
 {
 	using namespace std;
+
+	for (auto s : board->ships)
+		delete s;
+	board->ships.clear();
+	vector<Ship*>().swap(board->ships);
+
 	auto shipList = vector<vector<ShipTile*>>();
 	auto isAssigned = [&](ShipTile* currentTile)
 	{
@@ -161,8 +172,13 @@ void EditorGameMode::prepareBoard()
 	for (auto shipTiles : shipList)
 	{
 		auto ship = new Ship(shipTiles);
+		shipTiles.clear();
+		vector<ShipTile*>().swap(shipTiles);
 		board->ships.push_back(ship);
 	}
+
+	shipList.clear();
+	vector<vector<ShipTile*>>().swap(shipList);
 }
 
 EditorGameMode::~EditorGameMode()

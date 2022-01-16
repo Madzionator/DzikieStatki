@@ -169,7 +169,10 @@ void PlayGameMode::update(sf::Time deltaTime)
 					playStateText.setString("Trafiono! Wybierz kolejne pole");
 					if (turnResult == TurnResult::Destroyed)
 						if (--computerShipsLeft == 0)
+						{
+							prepareNextMode = true;
 							Game::SetGameMode(new GameOverMode(true, board1, board2));
+						}
 				}
 			}
 	}
@@ -185,7 +188,10 @@ void PlayGameMode::update(sf::Time deltaTime)
 		{
 			computer->wasDestroyed(p);
 			if (--playerShipsLeft == 0)
+			{
+				prepareNextMode = true;
 				Game::SetGameMode(new GameOverMode(false, board1, board2));
+			}
 		}
 
 		if (turnResult == TurnResult::Hit || turnResult == TurnResult::Destroyed) {
@@ -205,6 +211,12 @@ void PlayGameMode::update(sf::Time deltaTime)
 
 	boardDesc1.setString(L"Moja plansza (pozostałe statki: " + std::to_wstring(playerShipsLeft) + L")");
 	boardDesc2.setString(L"Plansza przeciwnika (pozostałe statki: " + std::to_wstring(computerShipsLeft) + L")");
+
+	if(prepareNextMode)
+	{
+		board1 = nullptr;
+		board2 = nullptr;
+	}
 }
 
 TurnResult PlayGameMode::hitTile(Tile* tile)

@@ -27,6 +27,7 @@ class PlayGameMode : public GameMode
 
 	bool isDrawingBlock;
 	bool shouldDrawBlocks;
+	bool prepareNextMode = false;
 
 	void MakeComputerBoard();
 	void setPlayState(PlayState ps);
