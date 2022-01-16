@@ -153,3 +153,15 @@ int Computer::validatePosition(int p)
 	tilesLeft.erase(std::remove(tilesLeft.begin(), tilesLeft.end(), positions[bestPosIdx]), tilesLeft.end());
 	return positions[bestPosIdx];
 }
+
+Computer::~Computer()
+{
+	tilesLeft.clear();
+	std::vector<int>().swap(tilesLeft);
+	currentDamagedShip.clear();
+	std::vector<int>().swap(currentDamagedShip);
+	shipSurrounding.clear();
+	std::vector<int>().swap(shipSurrounding);
+	shipLengths.clear();
+	std::vector<int>().swap(shipLengths);
+}

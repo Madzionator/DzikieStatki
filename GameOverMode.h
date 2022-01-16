@@ -18,4 +18,5 @@ class GameOverMode : public GameMode
 
 public:
 	GameOverMode(bool isWin, Board* board1, Board* board2);
+	~GameOverMode();
 };

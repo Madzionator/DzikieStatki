@@ -3,13 +3,14 @@
 #include "System.h"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
-GameMode* Game::mGameMode = nullptr;
+GameMode* Game::currentGameMode = nullptr;
+GameMode* Game::nextGameMode = nullptr;
 
 Game::Game()
     : mWindow(sf::VideoMode(854, 480), "Dzikie Statki")
 {
     System::Window = &mWindow;
-    SetGameMode(new MenuGameMode());
+    currentGameMode = new MenuGameMode();
 }
 
 void Game::Run()
@@ -32,7 +33,12 @@ void Game::Run()
 
 void Game::SetGameMode(GameMode* gameMode)
 {
-    mGameMode = gameMode;
+    //auto oldMode = currentGameMode;
+    //currentGameMode = gameMode;
+    //delete oldMode;
+    if(gameMode != nextGameMode)
+		delete nextGameMode;
+    nextGameMode = gameMode;
 }
 
 void Game::ProcessEvents()
@@ -45,12 +51,18 @@ void Game::ProcessEvents()
 
 void Game::Update(sf::Time deltaTime)
 {
-    mGameMode->update(deltaTime);
+	currentGameMode->update(deltaTime);
+    if (nextGameMode != nullptr)
+    {
+        delete currentGameMode;
+        currentGameMode = nextGameMode;
+        nextGameMode = nullptr;
+    }
 }
 
 void Game::Render()
 {
     mWindow.clear();
-    mWindow.draw(*mGameMode);
+    mWindow.draw(*currentGameMode);
     mWindow.display();
 }

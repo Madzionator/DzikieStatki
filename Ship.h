@@ -9,5 +9,6 @@ class Ship
 public:
 	bool checkDestroyed();
 	Ship(std::vector<ShipTile*> shiptiles);
+	~Ship() { tiles.clear(); std::vector<ShipTile*>().swap(tiles); }
 	auto getTiles() const { return &tiles; }
 };

@@ -17,5 +17,6 @@ private:
 	sf::RenderWindow mWindow;
 	static const sf::Time TimePerFrame;
 
-	static GameMode* mGameMode;
+	static GameMode* currentGameMode;
+	static GameMode* nextGameMode;
 };

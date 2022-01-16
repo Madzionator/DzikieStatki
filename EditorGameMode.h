@@ -22,4 +22,5 @@ class EditorGameMode : public GameMode
 
 public:
 	EditorGameMode(bool isClassicGame);
+	~EditorGameMode();
 };

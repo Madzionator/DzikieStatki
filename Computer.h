@@ -12,6 +12,7 @@ class Computer
 
 public:
 	Computer(std::vector<int> shipLengths);
+	~Computer();
 	int getNextPosition();
 	void wasHit(int position);
 	void wasDestroyed(int position);

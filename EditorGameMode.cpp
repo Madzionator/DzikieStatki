@@ -164,3 +164,11 @@ void EditorGameMode::prepareBoard()
 		board->ships.push_back(ship);
 	}
 }
+
+EditorGameMode::~EditorGameMode()
+{
+	delete playButton;
+	delete menuButton;
+	delete generateShipsButton;
+	delete board;
+}

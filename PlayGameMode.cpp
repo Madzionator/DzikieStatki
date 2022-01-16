@@ -237,3 +237,11 @@ void PlayGameMode::PlayAnimation(Animable* animation, Board* board, Tile* tile)
 	animation->setPosition(board->getTransform() * tile->getPosition());
 	animation->IsAnimated = true;
 }
+
+PlayGameMode::~PlayGameMode()
+{
+	delete menuButton;
+	delete computer;
+	delete board1;
+	delete board2;
+}

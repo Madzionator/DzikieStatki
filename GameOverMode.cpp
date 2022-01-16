@@ -61,3 +61,9 @@ void GameOverMode::update(sf::Time deltaTime)
 	board2->update(deltaTime);
 	menuButton.update(deltaTime);
 }
+
+GameOverMode::~GameOverMode()
+{
+	delete board1;
+	delete board2;
+}
