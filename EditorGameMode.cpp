@@ -106,8 +106,6 @@ void EditorGameMode::update(sf::Time deltaTime)
 bool EditorGameMode::validateBoard()
 {
 	message.setString("");
-	board->ships.clear();
-	std::vector<Ship*>().swap(board->ships);
 	prepareBoard();
 
 	if (isClassicGame)

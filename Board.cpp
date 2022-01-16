@@ -51,6 +51,7 @@ void Board::update(sf::Time delta_time)
 						? (Tile*) new WaterTile(this)
 						: (Tile*) new ShipTile(this);
 					tiles[x]->setPosition(tile->getPosition());
+					delete tile;
 				}
 			}
 	}
