@@ -19,6 +19,7 @@ PlayGameMode::PlayGameMode(Board* playerBoard) :
 	background.setColor(sf::Color(255, 255, 255, 100));
 
 	board1 = playerBoard;
+	playerBoard->setParent(this);
 	board2 = new Board(this);
 	board1->setPosition(80, 140);
 	board2->setPosition(480, 140);

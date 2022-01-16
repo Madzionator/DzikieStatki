@@ -13,10 +13,7 @@ int main()
 {
 	srand(time(0));
 	sf::Font font;
-	if (!font.loadFromFile("arial.ttf"))
-	{
-		// error...
-	}
+	font.loadFromFile("arial.ttf");
 
 	System::Font = &font;
 	Textures::get()->LoadTextures();

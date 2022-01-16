@@ -7,14 +7,14 @@
 class Animable : public Entity
 {
 private:
-	sf::Time frameTime; //15fps
-	sf::Time currentTime; // accumulator
-	int size;
-	int frame;
-	int frames;
+	sf::Time frameTime; 
+	sf::Time currentTime;
+	int imageSize;
+	int currentFrame;
+	int maxFrames;
 
 public:
-	void Restart() { frame = 0; }
+	void Restart() { currentFrame = 0; }
 	sf::Sprite* shape;
 	sf::Texture* texture;
 	bool IsAnimated = true;
@@ -26,12 +26,12 @@ public:
 		shape(new sf::Sprite(*texture)),
 		texture(texture)
 	{
-		frameTime = sf::seconds(0.05f);
-		size = texture->getSize().x;
+		frameTime = sf::seconds(0.05f); // 1/20th of second
+		imageSize = texture->getSize().x;
 
 		auto H = texture->getSize().y;
-		frames = H / size;
-		shape->setTextureRect(sf::IntRect(0, 0, size, size));
+		maxFrames = H / imageSize;
+		shape->setTextureRect(sf::IntRect(0, 0, imageSize, imageSize));
 	}
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
@@ -47,11 +47,12 @@ public:
 			if (currentTime >= frameTime) {
 				currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
 
-				if (frame + 1 < frames)
-					frame++;
+				if (currentFrame + 1 < maxFrames)
+					currentFrame++;
 				else if (IsLooped)
-					frame = 0;
-				shape->setTextureRect(sf::IntRect(0, frame * size, size, size));
+					currentFrame = 0;
+				
+				shape->setTextureRect(sf::IntRect(0, currentFrame * imageSize, imageSize, imageSize));
 			}
 		}
 	}

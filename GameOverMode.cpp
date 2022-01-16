@@ -16,7 +16,9 @@ GameOverMode::GameOverMode(bool isWin, Board* playerBoard, Board* computerBoard)
 	menuButton.setPosition(size.x / 2, 50);
 
 	board1 = playerBoard;
+	board1->setParent(this);
 	board2 = computerBoard;
+	board2->setParent(this);
 	for (int i = 0; i < 100; i++)
 	{
 		if (board2->tiles[i]->TileType == TileType::Ship)

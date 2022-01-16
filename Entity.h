@@ -11,4 +11,13 @@ protected:
 
 public:
 	virtual void update(sf::Time deltaTime) {}
+	Entity* getParent() const { return parent; }
+	void setParent(Entity* p) { parent = p; }
+	sf::Transform getTotalTransform()
+	{
+		auto trans = getTransform();
+		if (parent != nullptr)
+			trans = parent->getTotalTransform() * trans;
+		return trans;
+	}
 };

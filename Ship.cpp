@@ -20,9 +20,6 @@ Ship::Ship(std::vector<ShipTile*> shiptiles)
 
 Ship::~Ship()
 {
-	int i = tiles.size() - 1;
-	/*for (i; i >= 0; i--)
-		delete tiles[i];*/
 	tiles.clear();
 	std::vector<ShipTile*>().swap(tiles);
 }

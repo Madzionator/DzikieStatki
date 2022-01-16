@@ -15,7 +15,7 @@ IsCentered(centered)
 	text.setFillColor(sf::Color::Black);
 	text.setString(txt);
 
-	updateSize();
+	updatePosition();
 }
 
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -25,7 +25,7 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(text, states);
 }
 
-void Button::updateSize()
+void Button::updatePosition()
 {
 	auto textSize = text.getLocalBounds();
 	auto shapeSize = shape.getLocalBounds();
@@ -44,7 +44,7 @@ void Button::updateSize()
 void Button::update(sf::Time delta_time)
 {
 	auto mouse = sf::Mouse::getPosition(*System::Window);
-	auto mouseVec = (parent->getTransform() * getTransform()).getInverse() * (System::Window->mapPixelToCoords(mouse));
+	auto mouseVec = getTotalTransform().getInverse() * (System::Window->mapPixelToCoords(mouse));
 
 	IsMouseOver = shape.getGlobalBounds().contains(mouseVec.x, mouseVec.y);
 	IsMouseClicked = IsMouseDown && IsMouseOver && !sf::Mouse::isButtonPressed(sf::Mouse::Left);

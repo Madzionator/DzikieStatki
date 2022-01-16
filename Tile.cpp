@@ -16,7 +16,7 @@ void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Tile::update(sf::Time delta_time)
 {
 	auto mouseVec = sf::Mouse::getPosition(*System::Window);
-	auto localMousePosition = (parent->getTransform() * getTransform()).getInverse().transformPoint(System::Window->mapPixelToCoords(mouseVec));
+	auto localMousePosition = getTotalTransform().getInverse() * System::Window->mapPixelToCoords(mouseVec);
 
 	IsMouseOver = overlay.getLocalBounds().contains(localMousePosition);
 	IsLeftMouseClicked = !IsLeftMouseDown && IsMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left);
